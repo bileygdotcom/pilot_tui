@@ -1,0 +1,31 @@
+[Unit]
+
+Description=ASCON Pilot-Server
+
+After=network.target
+
+ 
+
+[Service]
+
+User=pilotuser
+
+Group=pilotuser
+
+Type=simple
+
+WorkingDirectory=/opt/pilot-server
+
+Restart=always
+
+RestartSec=3
+
+ExecStart=/opt/pilot-server/Ascon.Pilot.Daemon /opt/pilot-server/settings.xml
+
+ExecStop=/bin/kill -s 3 $MAINPID
+
+ 
+
+[Install]
+
+WantedBy=multi-user.target

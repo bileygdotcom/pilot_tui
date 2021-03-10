@@ -1,0 +1,149 @@
+<?xml version="1.0"?>
+<Configuration xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+  <Version>1</Version>
+  <ServerParamaters HttPort="5545" HttpsPort="5548" />
+  <DatabasesDefaultFolder>/usr/share/ASCON/Pilot Server/Databases</DatabasesDefaultFolder>
+  <Databases>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Broken" Version="0" Id="dfc3c52e-08af-46f7-9d49-41f929af12cb" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Broken" Version="0" Id="d9ab5cea-c577-4e41-8a14-4c534cd14ba1" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Broken" Version="0" Id="e649339e-8e73-4d02-a435-302b50d7ff6c" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="ea18dedc-a6ed-447c-b49d-3303d1d2879c" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="52eb62fd-ca64-4990-aff8-edd2bdb96e0b" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="a1adef33-1df8-401e-945a-b18b2d4d27ef" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="eaa9387a-f41a-4835-a797-cb687d57bd63" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="f3bfa5e1-e3e4-440b-ad36-5a46dcface93" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="d718496a-1f45-4d67-b7a4-74a9f772f737" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="ac9fa29f-bbda-4160-af85-dfeba85a36c2" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="db76d941-4a69-403b-a7e0-18b0f75c103d" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="fc37b6dd-219b-4ebd-866c-9f10132a58b6" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="5a26269d-644d-4941-9881-545ee8edeba0" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="e741ac9f-886b-4c95-90e1-c18dee03edd2" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="e4f8cc07-c500-491a-bedd-ec0c62469835" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="b48d0fe1-c744-43c0-88af-9effaf5600cf" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="30b3d436-5ffb-4223-856d-4d73d7e1f307" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="a2b01d2b-d8ff-4931-bf2f-d415589015da" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="29d4ef04-1794-4ec0-aee8-f88fa1565f87" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="1324ca66-b691-41da-ad2f-2ae16de98697" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="c29707bd-9d76-4645-af47-5eebe431e187" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="abe06782-5fc6-4ad1-8a23-dc3d62665fad" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="dc72179f-e3ae-41cf-8bcc-6b23c3e94511" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="7e2c6956-6ba3-4b74-9783-c2af9fd08cc4" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_ru" Filename="/opt/pilot-server/bases/pilot-ice_ru/base.dbp" State="Launched" Version="0" Id="44200670-e45f-4e67-9736-a5af38134ade" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ice_en" Filename="/opt/pilot-server/bases/pilot-ice_en/base.dbp" State="Launched" Version="0" Id="86ea8d0e-9931-47b9-8afc-0412d3185ae8" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ice_en" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+    <DatabaseParameters Name="pilot-ecm_ru" Filename="/opt/pilot-server/bases/pilot-ecm_ru/base.dbp" State="Launched" Version="0" Id="c08a70c2-57fa-4066-aaff-21590b470b51" SessionId="00000000-0000-0000-0000-000000000000">
+      <FileArchiveFolders>
+        <FileArchiveParameters Folder="pilot-ecm_ru" />
+      </FileArchiveFolders>
+    </DatabaseParameters>
+  </Databases>
+  <Administrators />
+  <TextSearchServer Url="http://localhost:20007/" />
+  <LdapServer SafePassword="QwBmAEQASgA4AEwAMwBxAGMAawB5AEQAOABrAHgAQwBwAFYARABmAEIALQB4ADEAMwBjAEUAQQBlADEAMwBHAFYAWgBVAGkAcQBiADcAZwBiAFMASwA1AF8AaQBnAG4AdwBJADYAUwBlAGgALQAtAFEAXwBGADEANgBzAFMAbQBnAFIAbwBqAGkAcgBxAHYAcQB4AGcAOQAzAHcAMQBHAE0AQgBUAFkAdgBYAFIARQA2AFAAawBrADcAUgBrAF8AVQBFAHoAZAB2ADkAegBfAEoAcwBlAGEAaQBJAFoAcABfAGQAagBUAG0AWABxAEMATQBrAEsAVABwADcAdgBxADIARwBJAFAASwBRAA==" />
+  <FileArchiveUploadSettings CheckMd5="true" />
+  <IsExtendedLoggingEnabled>false</IsExtendedLoggingEnabled>
+  <IsAutomationLoggingEnabled>false</IsAutomationLoggingEnabled>
+</Configuration>

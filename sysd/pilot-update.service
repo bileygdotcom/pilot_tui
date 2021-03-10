@@ -1,0 +1,27 @@
+[Unit]
+
+Description=ASCON Pilot-Update
+
+After=network.target
+
+ 
+
+[Service]
+
+User=pilotuser
+
+Group=pilotuser
+
+Type=oneshot
+
+RemainAfterExit=yes
+
+WorkingDirectory=/opt/pilot-server
+
+ExecStart=/bin/sh /opt/pilot-server/bin/updateScript.sh /opt/pilot-server/Update /opt/pilot-server
+
+ 
+
+[Install]
+
+WantedBy=multi-user.target

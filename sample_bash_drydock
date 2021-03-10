@@ -1,0 +1,4 @@
+#!/bin/bash
+
+cd ~/_DEV/drydock/master/drydock
+gnome-terminal -- python3 drydock.py
