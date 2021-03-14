@@ -574,7 +574,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 0:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderSubtitle()
             renderStatusBar()
             if firsttime == False:
@@ -584,7 +584,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 1:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderSubtitle()
             renderStatusBar()
             #Status = renderWindowOverLogo()
@@ -624,7 +624,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 2:
             tilist = getPic.loadImage2("./image/04_Distrakt.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             #renderWindowUpperCommon(outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText)
             outstring1 = " WARNING! "
@@ -644,7 +644,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 3:
             tilist = getPic.loadImage2("./image/03_Purging.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             if firstPurge == True:
                 purge.stopPilotServer()
@@ -671,7 +671,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 4:
             tilist = getPic.loadImage2("./image/05_AllsClear.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             outstring1 = "  Clear,  "
             outstring2 = "  All's ready to build up fresh Pilot-Server."
@@ -691,7 +691,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 5:
             tilist = getPic.loadImage2("./image/01_Downloading.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             if firstLoad == True:
                 loadIntoDirectory.makeFolder(softpath)
@@ -717,7 +717,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 6:
             tilist = getPic.loadImage2("./image/02_Unpacking.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             if firstUnpac == True:
                 loadIntoDirectory.unzip(softpath)
@@ -739,7 +739,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 7:
             tilist = getPic.loadImage2("./image/06_Construction.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             if firstAuth == True:
                 login = inputWindow("Enter login: ",0)
@@ -765,7 +765,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 8:
             tilist = getPic.loadImage2("./image/07_Launch.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             if firstLaunch == True:
                 testServer.launch(softpath)
@@ -791,7 +791,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 9:
             tilist = getPic.loadImage2("./image/08_System.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             if firstBuild == True:
                 buildComplex.adduser(softpath)
@@ -822,7 +822,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 10:
             tilist = getPic.loadImage2("./image/09_Complete.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             outstring1 = " READY "
             outstring2 = "  Pilot-Server is ready to work & needs databases."
@@ -841,7 +841,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 11:
             tilist = getPic.loadImage2("./image/10_Connect.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             if firstConnect == True:
                 #connectDemoBases.download(softpath)
@@ -872,7 +872,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             installed = True
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderSubtitle()
             renderStatusBar()
         
@@ -880,7 +880,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 13:
             tilist = getPic.loadImage2("./image/11_Update.ti")
             renderTopper()
-            renderImage()
+            renderImage(height, width, tilist, center_x, center_y)
             renderStatusBar()
             outstring1 = " SYSTEM "
             outstring2 = "  Pilot-Server archive was downloaded"
