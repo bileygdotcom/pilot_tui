@@ -38,7 +38,7 @@ import testServer
 import buildComplex
 import connectDemoBases
 
-def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
+def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     
     def renderImage():
         # Rendering logo
@@ -284,22 +284,23 @@ def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
         # Help screen
         
         def srvNum(y,col,num):
-            if servSelect1 == False and y == 5:
-                tw1.addstr(y,4," >>> ")
-            if servSelect1 == False:
-                tw1.addstr(y,4,"     ")
-            if servSelect2 == True and y == 7:
-                tw1.addstr(y,4," >>> ")
+            if servSelect1 == True:
+                tw1.addstr(5,4," >>> ")
             else:
-                tw1.addstr(y,4,"     ")
-            if servSelect3 == True and y == 9:
-                tw1.addstr(y,4," >>> ")
+                tw1.addstr(5,4, "    ")
+            if servSelect2 == True:
+                tw1.addstr(7,4," >>> ")
             else:
-                tw1.addstr(y,4,"     ")
-            if servSelect4 == True and y == 11:
-                tw1.addstr(y,4," >>> ")
+                tw1.addstr(7,4, "    ")
+            if servSelect3 == True:
+                tw1.addstr(9,4," >>> ")
             else:
-                tw1.addstr(y,4,"     ")
+                tw1.addstr(9,4, "    ")
+            if servSelect4 == True:
+                tw1.addstr(11,4," >>> ")
+            else:
+                tw1.addstr(11,4, "    ")
+
             tw1.attron(curses.color_pair(col))
             tw1.addstr(y,4+6,"  "+str(num)+"  ")
             tw1.attroff(curses.color_pair(col))
@@ -396,9 +397,9 @@ def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
     colA = 4
     colB = 3
     #Status = 0 - installation mode
-    Status = 0
+    #Status = 0
     #Status = 12 - normal mode
-    #Status = 12
+    Status = 12
     firstPurge = True
     firstLoad = True
     firstUnpac = True
@@ -410,7 +411,7 @@ def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
     ScreenN = 0
     serverON = True
     servSelect1 = False
-    servSelect2 = False 
+    servSelect2 = False
     servSelect3 = False
     servSelect4 = False
     
@@ -527,15 +528,27 @@ def draw_menu(stdscr,tilist,conflist,Fconf,F_Done):
                 StatusN = 9
             
             ## Digits KEYS ##
-            
-            if k == ord('1') and ScreenN == 2:
-                servSelect1 = True
-            if k == ord('2') and ScreenN == 2:
-                servSelect2 = True
-            if k == ord('3') and ScreenN == 2:
-                servSelect3 = True
-            if k == ord('4') and ScreenN == 2:
-                servSelect4 = True
+            if ScreenN == 2:
+                if k == ord('1'):
+                    servSelect1 = True
+                    servSelect2 = False
+                    servSelect3 = False
+                    servSelect4 = False
+                if k == ord('2'):
+                    servSelect1 = False
+                    servSelect2 = True
+                    servSelect3 = False
+                    servSelect4 = False
+                if k == ord('3'):
+                    servSelect1 = False
+                    servSelect2 = False
+                    servSelect3 = True
+                    servSelect4 = False
+                if k == ord('4'):
+                    servSelect1 = False
+                    servSelect2 = False
+                    servSelect3 = False
+                    servSelect4 = True
             
         ## END OF DEFINITION OF F-KEYS #################################
         
