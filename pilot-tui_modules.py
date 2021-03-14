@@ -454,7 +454,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         ################################################################
         
         # Render Status Bar
-        renderStatusBar()
+        bar.renderStatusBar(stdscr, Status, height, width)
         
         
         if MenuState == 0:
@@ -464,20 +464,20 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 0. Logo
         if Status == 0:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderSubtitle()
-            renderStatusBar()
+            bar.renderSubtitle(stdscr, start_y, start_x_title, title)
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firsttime == False:
                 Status = windowStart()
                 
         # Status 1. Check
         if Status == 1:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderSubtitle()
-            renderStatusBar()
+            bar.renderSubtitle(stdscr, start_y, start_x_title, title)
+            bar.renderStatusBar(stdscr, Status, height, width)
             #Status = renderWindowOverLogo()
             if direxists == True and fileexists == True:
                 outstring1 = " STATUS:  "
@@ -514,9 +514,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 2. Distrakt. Pilot-Server was set without Pilot-TUI
         if Status == 2:
             tilist = getPic.loadImage2("./image/04_Distrakt.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             #renderWindowUpperCommon(outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText)
             outstring1 = " WARNING! "
             outstring2 = "  Pilot-Server was installed without Pilot-TUI."
@@ -534,9 +534,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 3. Purging.
         if Status == 3:
             tilist = getPic.loadImage2("./image/03_Purging.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firstPurge == True:
                 purge.stopPilotServer()
                 smallWindow("Services are stopped.",0)
@@ -561,9 +561,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 4. All's clear.
         if Status == 4:
             tilist = getPic.loadImage2("./image/05_AllsClear.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             outstring1 = "  Clear,  "
             outstring2 = "  All's ready to build up fresh Pilot-Server."
             outstring3 = "  Press 'S' to start installation. "
@@ -581,9 +581,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 5. Downloading.
         if Status == 5:
             tilist = getPic.loadImage2("./image/01_Downloading.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firstLoad == True:
                 loadIntoDirectory.makeFolder(softpath)
                 smallWindow("The folder was created.",0)
@@ -607,9 +607,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 6. Unpacking.
         if Status == 6:
             tilist = getPic.loadImage2("./image/02_Unpacking.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firstUnpac == True:
                 loadIntoDirectory.unzip(softpath)
                 firstUnpac = False
@@ -629,9 +629,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 7. Construction.
         if Status == 7:
             tilist = getPic.loadImage2("./image/06_Construction.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firstAuth == True:
                 login = inputWindow("Enter login: ",0)
                 passw = inputWindow("Enter passw: ",3)
@@ -655,9 +655,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 8. Test Launch.
         if Status == 8:
             tilist = getPic.loadImage2("./image/07_Launch.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firstLaunch == True:
                 testServer.launch(softpath)
                 time.sleep(1.5)
@@ -681,9 +681,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 9. Build a Complex.
         if Status == 9:
             tilist = getPic.loadImage2("./image/08_System.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firstBuild == True:
                 buildComplex.adduser(softpath)
                 smallWindow("User 'pilotuser' was added.",0)
@@ -712,9 +712,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 10. Complete.
         if Status == 10:
             tilist = getPic.loadImage2("./image/09_Complete.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             outstring1 = " READY "
             outstring2 = "  Pilot-Server is ready to work & needs databases."
             outstring3 = "  Press 'C' to connect it with databases. "
@@ -731,9 +731,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Status 11. Connect.
         if Status == 11:
             tilist = getPic.loadImage2("./image/10_Connect.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             if firstConnect == True:
                 #connectDemoBases.download(softpath)
                 smallWindow("Demobases were downloaded & unzipped",0)
@@ -762,18 +762,18 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 12:
             installed = True
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
-            bar.renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             #renderImage()
-            bar.renderSubtitle()
-            bar.renderStatusBar()
+            bar.renderSubtitle(stdscr, start_y, start_x_title, title)
+            bar.renderStatusBar(stdscr, Status, height, width)
         
         # Status 13. UPDATE.
         if Status == 13:
             tilist = getPic.loadImage2("./image/11_Update.ti")
-            renderTopper()
+            bar.renderTopper(stdscr, width)
             renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            renderStatusBar()
+            bar.renderStatusBar(stdscr, Status, height, width)
             outstring1 = " SYSTEM "
             outstring2 = "  Pilot-Server archive was downloaded"
             outstring3 = "  Press 'U' to unzip package. "

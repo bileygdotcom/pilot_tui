@@ -1,7 +1,8 @@
 # module bar
 
-def renderSubtitle():
+def renderSubtitle(stdscr, start_y, start_x_title, title):
     # Rendering subtitle
+    import curses
     stdscr.attron(curses.color_pair(1))
     stdscr.attron(curses.A_BOLD)
     stdscr.addstr(start_y + 3, start_x_title + 15, title)
@@ -9,10 +10,11 @@ def renderSubtitle():
     stdscr.attroff(curses.A_BOLD)
 
 
-def renderTopper():
+def renderTopper(stdscr, width):
     # Topper showing the coordinates
     # whstr = "W-H: [{},{}]".format(width, height)
     # topperstr1 = whstr
+    import curses
     topperstr1 = ' \U00002297' + '  Pilot TUI v.2'
     topperstr2 = ' \U00002297' + '  terminal interface for Pilot-Server'
     topperstr3 = " "
@@ -39,12 +41,13 @@ def renderTopper():
 # def pressAnyKey():
 
 
-def renderStatusBar():
+def renderStatusBar(stdscr, Status, height, width):
     # Render 2 nether Status Bars
+    import curses
     sbpair1 = 9
     sbpair2 = 3
 
-    # normalization of names for menu
+    ## normalization of names for menu when get'em from conf
     # Fconf0names = []
     # for i in range(1,13):
     # Fconf0 = Fconf[i][0]
@@ -65,7 +68,7 @@ def renderStatusBar():
             statusbarstr2 = " "
             statusbarstr1 = " "
         else:
-            # statusbar menu set
+            ## statusbar menu set
             # statusbarstr2 = " "+FCN[0]+" | "+FCN[1]+" | "+FCN[2]+" | "+FCN[3]+" | "+FCN[4]+" | "+FCN[5]+" |"
             # statusbarstr1 = " "+FCN[6]+" | "+FCN[7]+" | "+FCN[8]+" | "+FCN[9]+" | "+FCN[10]+" | "+FCN[11]+" |"
             statusbarstr2 = " F1 - help  | F2 - servr | F3 -       | F4 -       | F5 - bases | F6 - upgrd "
