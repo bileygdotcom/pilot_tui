@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 #
-#  pilot-tui.py
+#  pilot-tui_modules.py
 #  
 #  Copyright 2020 bileyg <bileyg@bodhi>
 #  
@@ -21,16 +21,14 @@
 #  MA 02110-1301, USA.
 #  
 #  
-
 import sys,os
-
-sys.path.insert(1, './modules')
-
 import curses
 import subprocess
 import resource
 from getpass import getpass
 import time
+#modules in folder
+sys.path.insert(1, './modules')
 import purge
 import where
 import getPic
@@ -41,116 +39,9 @@ import testServer
 import buildComplex
 import connectDemoBases
 import renderImage
+import bar
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
-    
-    #def renderImage():
-        ## Rendering logo
-        ## from the terminal image strings
-        #PixelMatrix = []
-        #PixelString = []
-        #PixelColors = ['0','1','2','3','4','5','6','7','8','9','A','B','C','D','E','F']
-        #if height >= 23 and width >= 80:
-            #for j in range(3,22):
-                #PixelString = tilist[j]
-                #for i in range(3,82):
-                    #Pixel = tilist[j][i]
-                    #PColor = PixelColors.index(Pixel)
-                    #stdscr.attron(curses.color_pair(20+PColor))
-                    #if PColor > 7:
-                        #stdscr.attron(curses.A_BOLD)
-                    #XX = (center_x - (len(PixelString)-4)//2)
-                    #YY = (center_y - 11)
-                    #stdscr.addstr(j-1+YY, i-3+XX, B)
-                    ##stdscr.addstr(start_y+j-11, start_x_logo+i, 'B')
-                    #if PColor > 7:
-                        #stdscr.attroff(curses.A_BOLD)
-                    #stdscr.attroff(curses.color_pair(20+PColor))
-    
-    def renderSubtitle():
-        # Rendering subtitle
-        stdscr.attron(curses.color_pair(1))
-        stdscr.attron(curses.A_BOLD)
-        stdscr.addstr(start_y+3, start_x_title+15, title)
-        stdscr.attroff(curses.color_pair(2))
-        stdscr.attroff(curses.A_BOLD)
-            
-    def renderTopper():
-        # Topper showing the coordinates
-        #whstr = "W-H: [{},{}]".format(width, height)
-        #topperstr1 = whstr
-        topperstr1 = ' \U00002297' + '  Pilot TUI v.2'
-        topperstr2 = ' \U00002297' + '  terminal interface for Pilot-Server'
-        topperstr3 = " "
-        
-        # Render topper1
-        stdscr.attron(curses.color_pair(7))
-        stdscr.addstr(0, 0, topperstr1)
-        stdscr.addstr(0, len(topperstr1), " " * (width - len(topperstr1) - 1))
-        stdscr.attroff(curses.color_pair(7))
-        
-        # Render topper2
-        stdscr.attron(curses.color_pair(4))
-        stdscr.addstr(1, 0, topperstr2)
-        stdscr.addstr(1, len(topperstr2), " " * (width - len(topperstr2) - 1))
-        stdscr.attroff(curses.color_pair(4))
-        
-        # Render topper3
-        stdscr.attron(curses.color_pair(9))
-        stdscr.addstr(2, 0, topperstr3)
-        stdscr.addstr(2, len(topperstr3), " " * (width - len(topperstr3) - 1))
-        stdscr.attroff(curses.color_pair(9))
-        
-    #def pressAnyKey():
-        
-        
-    def renderStatusBar():
-        # Render 2 nether Status Bars
-        sbpair1 = 9
-        sbpair2 = 3
-        
-        #normalization of names for menu
-        #Fconf0names = []
-        #for i in range(1,13):
-            #Fconf0 = Fconf[i][0]
-            #scl = len(Fconf0)
-            #if scl > 10:
-                #sss = (Fconf0[0:10])
-            #elif scl == 10:
-                #sss = Fconf0
-            #else:
-                #ascl = 10 - scl
-                #sss = Fconf0[0:10] + ' '*ascl
-            #Fconf0names.append(sss)
-        #FCN = Fconf0names
-            
-        if height >= 23 and width >= 79:
-            
-            if Status < 12:
-                statusbarstr2 = " "
-                statusbarstr1 = " "
-            else:
-                #statusbar menu set
-                #statusbarstr2 = " "+FCN[0]+" | "+FCN[1]+" | "+FCN[2]+" | "+FCN[3]+" | "+FCN[4]+" | "+FCN[5]+" |"
-                #statusbarstr1 = " "+FCN[6]+" | "+FCN[7]+" | "+FCN[8]+" | "+FCN[9]+" | "+FCN[10]+" | "+FCN[11]+" |"
-                statusbarstr2 =  " F1 - help  | F2 - servr | F3 -       | F4 -       | F5 - bases | F6 - upgrd "
-                statusbarstr1 =  " F7 - admin | F8 - purge | F9 - instl | F10 - alt  | F11 - fscr | F12 - EXIT "
-            
-        else:
-            statusbarstr2 = "Window size should be minimum 79x23 "
-            statusbarstr1 = " "
-            
-        # Render status bar
-        stdscr.attron(curses.color_pair(sbpair1))
-        stdscr.addstr(height-1, 0, statusbarstr1)
-        stdscr.addstr(height-1, len(statusbarstr1), " " * (width - len(statusbarstr1) - 1))
-        stdscr.attroff(curses.color_pair(sbpair1))
-        
-        # Render top status bar
-        stdscr.attron(curses.color_pair(sbpair2))
-        stdscr.addstr(height-2, 0, statusbarstr2)
-        stdscr.addstr(height-2, len(statusbarstr2), " " * (width - len(statusbarstr2) - 1))
-        stdscr.attroff(curses.color_pair(sbpair2))
         
     def windowStart():
         #WINDOW over Logo
@@ -574,7 +465,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 0:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderSubtitle()
             renderStatusBar()
             if firsttime == False:
@@ -584,7 +475,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 1:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderSubtitle()
             renderStatusBar()
             #Status = renderWindowOverLogo()
@@ -624,7 +515,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 2:
             tilist = getPic.loadImage2("./image/04_Distrakt.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             #renderWindowUpperCommon(outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText)
             outstring1 = " WARNING! "
@@ -644,7 +535,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 3:
             tilist = getPic.loadImage2("./image/03_Purging.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             if firstPurge == True:
                 purge.stopPilotServer()
@@ -671,7 +562,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 4:
             tilist = getPic.loadImage2("./image/05_AllsClear.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             outstring1 = "  Clear,  "
             outstring2 = "  All's ready to build up fresh Pilot-Server."
@@ -691,7 +582,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 5:
             tilist = getPic.loadImage2("./image/01_Downloading.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             if firstLoad == True:
                 loadIntoDirectory.makeFolder(softpath)
@@ -717,7 +608,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 6:
             tilist = getPic.loadImage2("./image/02_Unpacking.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             if firstUnpac == True:
                 loadIntoDirectory.unzip(softpath)
@@ -739,7 +630,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 7:
             tilist = getPic.loadImage2("./image/06_Construction.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             if firstAuth == True:
                 login = inputWindow("Enter login: ",0)
@@ -765,7 +656,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 8:
             tilist = getPic.loadImage2("./image/07_Launch.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             if firstLaunch == True:
                 testServer.launch(softpath)
@@ -791,7 +682,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 9:
             tilist = getPic.loadImage2("./image/08_System.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             if firstBuild == True:
                 buildComplex.adduser(softpath)
@@ -822,7 +713,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 10:
             tilist = getPic.loadImage2("./image/09_Complete.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             outstring1 = " READY "
             outstring2 = "  Pilot-Server is ready to work & needs databases."
@@ -841,7 +732,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 11:
             tilist = getPic.loadImage2("./image/10_Connect.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             if firstConnect == True:
                 #connectDemoBases.download(softpath)
@@ -871,16 +762,17 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 12:
             installed = True
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
-            renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
-            renderSubtitle()
-            renderStatusBar()
+            bar.renderTopper()
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+            #renderImage()
+            bar.renderSubtitle()
+            bar.renderStatusBar()
         
         # Status 13. UPDATE.
         if Status == 13:
             tilist = getPic.loadImage2("./image/11_Update.ti")
             renderTopper()
-            renderImage(height, width, tilist, center_x, center_y)
+            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             renderStatusBar()
             outstring1 = " SYSTEM "
             outstring2 = "  Pilot-Server archive was downloaded"

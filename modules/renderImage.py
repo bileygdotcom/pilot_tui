@@ -1,6 +1,6 @@
 # module renderImage
 
-def renderImage(height, width, tilist, center_x, center_y):
+def renderImage(stdscr, height, width, tilist, center_x, center_y, B):
 # Rendering logo
 # from the terminal image strings
     import curses

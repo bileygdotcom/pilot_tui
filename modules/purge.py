@@ -1,4 +1,5 @@
 #purge.py
+import subprocess
 
 def stopPilotServer():
     command1 = 'sudo /bin/systemctl stop pilot-server.service'
