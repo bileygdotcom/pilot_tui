@@ -21,11 +21,8 @@
 #  MA 02110-1301, USA.
 #  
 #  
-import sys,os
+import sys
 import curses
-import subprocess
-import resource
-from getpass import getpass
 import time
 #modules in folder
 sys.path.insert(1, './modules')
@@ -42,6 +39,8 @@ import renderImage
 import bar
 import helpPage
 import renderWindow
+from modules import switchSelect
+
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
@@ -569,7 +568,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Screen 2. SRVS
         if ScreenN == 2:
             time.sleep(0.1)
-            serverState()
+            switchSelect.serverSelect(center_x, center_y, servSelect, B, serverON)
         
         #cursor move works if right before the refresh()
         #stdscr.move(cursor_y, cursor_x)
