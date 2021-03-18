@@ -63,9 +63,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     colA = 4
     colB = 3
     #Status = 0 - installation mode
-    Status = 0
+    #Status = 0
     #Status = 12 - normal mode
-    #Status = 12
+    Status = 12
     firstPurge = True
     firstLoad = True
     firstUnpac = True
@@ -76,10 +76,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     installed = False
     ScreenN = 0
     serverON = True
-    servSelect1 = False
-    servSelect2 = False
-    servSelect3 = False
-    servSelect4 = False
+    servSelect = False
     
     # Declaration of about strings
     B = '\U00002588'
@@ -196,25 +193,13 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             ## Digits KEYS ##
             if ScreenN == 2:
                 if k == ord('1'):
-                    servSelect1 = True
-                    servSelect2 = False
-                    servSelect3 = False
-                    servSelect4 = False
+                    servSelect = 1
                 if k == ord('2'):
-                    servSelect1 = False
-                    servSelect2 = True
-                    servSelect3 = False
-                    servSelect4 = False
+                    servSelect = 2
                 if k == ord('3'):
-                    servSelect1 = False
-                    servSelect2 = False
-                    servSelect3 = True
-                    servSelect4 = False
+                    servSelect = 3
                 if k == ord('4'):
-                    servSelect1 = False
-                    servSelect2 = False
-                    servSelect3 = False
-                    servSelect4 = True
+                    servSelect = 4
             
         ## END OF DEFINITION OF F-KEYS #################################
         
