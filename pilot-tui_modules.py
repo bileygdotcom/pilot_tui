@@ -64,9 +64,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     colA = 4
     colB = 3
     #Status = 0 - installation mode
-    #Status = 0
+    Status = 0
     #Status = 12 - normal mode
-    Status = 12
+    #Status = 12
     firstPurge = True
     firstLoad = True
     firstUnpac = True
@@ -101,6 +101,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     # Clear and refresh the screen for a blank canvas
     stdscr.erase()
     stdscr.refresh()
+
     
     ##############################################
     # Loop where k is the last character pressed #
@@ -111,17 +112,21 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Initialization
         stdscr.erase()
         height, width = stdscr.getmaxyx()
-        
+
         # Centering calculations
         start_x_title = int((width // 2) - (len(title) // 2) - len(title) % 2)
         start_x_subtitle = int((width // 2) - (len(subtitle) // 2) - len(subtitle) % 2)
         start_x_keystr = int((width // 2) - (len(keystr) // 2) - len(keystr) % 2)
-        
+
         start_x_logo = int((width // 2) - (len(tilist[0]) // 2) - len(tilist[0]) % 2) - 2
         start_y = int((height // 2) - 2)
-        
+
         center_y = int((height// 2))
         center_x = int((width // 2))
+
+        # functions list (experimental)
+        f1 = renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+        funcList = [f1]
         
         ################################################################
         ## DEFINITION OF KEYS   ########################################
@@ -171,16 +176,15 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Render Status Bar
         bar.renderStatusBar(stdscr, Status, height, width)
         
-        
         if MenuState == 0:
-            
             showWindow = False
             
         # Status 0. Logo
         if Status == 0:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+            funcList[0]
+            #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             bar.renderSubtitle(stdscr, start_y, start_x_title, title)
             bar.renderStatusBar(stdscr, Status, height, width)
             if firsttime == False:
@@ -190,7 +194,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 1:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+            funcList[0]
+            #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             bar.renderSubtitle(stdscr, start_y, start_x_title, title)
             bar.renderStatusBar(stdscr, Status, height, width)
             #Status = renderWindowOverLogo()
@@ -478,7 +483,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             installed = True
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+            funcList[0]
+            #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             #renderImage()
             bar.renderSubtitle(stdscr, start_y, start_x_title, title)
             bar.renderStatusBar(stdscr, Status, height, width)
