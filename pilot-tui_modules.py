@@ -95,6 +95,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     N_text4 = " 4 "
     N_text5 = " 5 "
 
+    # init curses colors and colorpairs
     initColor.initPairs()
 
     # Clear and refresh the screen for a blank canvas
@@ -121,20 +122,6 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         
         center_y = int((height// 2))
         center_x = int((width // 2))
-
-        # It's all about cursor
-        #if k == curses.KEY_DOWN:
-            #cursor_y = cursor_y + 1
-        #elif k == curses.KEY_UP:
-            #cursor_y = cursor_y - 1
-        #elif k == curses.KEY_RIGHT:
-            #cursor_x = cursor_x + 1
-        #elif k == curses.KEY_LEFT:
-            #cursor_x = cursor_x - 1
-        #cursor_x = max(0, cursor_x)
-        #cursor_x = min(width-1, cursor_x)
-        #cursor_y = max(0, cursor_y)
-        #cursor_y = min(height-1, cursor_y)
         
         ################################################################
         ## DEFINITION OF KEYS   ########################################
