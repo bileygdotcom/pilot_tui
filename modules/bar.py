@@ -41,7 +41,7 @@ def renderTopper(stdscr, width):
 # def pressAnyKey():
 
 
-def renderStatusBar(stdscr, Status, height, width):
+def renderStatusBar(stdscr, Status, height, width, statusbarstr1, statusbarstr2):
     # Render 2 nether Status Bars
     import curses
     sbpair1 = 9
@@ -62,19 +62,7 @@ def renderStatusBar(stdscr, Status, height, width):
     # Fconf0names.append(sss)
     # FCN = Fconf0names
 
-    if height >= 23 and width >= 79:
-
-        if Status < 12:
-            statusbarstr2 = " "
-            statusbarstr1 = " "
-        else:
-            ## statusbar menu set
-            # statusbarstr2 = " "+FCN[0]+" | "+FCN[1]+" | "+FCN[2]+" | "+FCN[3]+" | "+FCN[4]+" | "+FCN[5]+" |"
-            # statusbarstr1 = " "+FCN[6]+" | "+FCN[7]+" | "+FCN[8]+" | "+FCN[9]+" | "+FCN[10]+" | "+FCN[11]+" |"
-            statusbarstr2 = " F1 - help  | F2 - servr | F3 -       | F4 -       | F5 - bases | F6 - upgrd "
-            statusbarstr1 = " F7 - admin | F8 - purge | F9 - instl | F10 - alt  | F11 - fscr | F12 - EXIT "
-
-    else:
+    if height <= 23 and width <= 79:
         statusbarstr2 = "Window size should be minimum 79x23 "
         statusbarstr1 = " "
 

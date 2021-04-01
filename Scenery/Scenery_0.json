@@ -1,0 +1,22 @@
+{
+  "functions": [
+    {
+      "function": "Image",
+      "imagePath": "./image/00_pilottui-logo.ti"
+    },
+    {
+      "function": "Topper"
+    },
+    {
+      "function": "Subtitle"
+    },
+    {
+      "function": "Statusbar",
+      "statusbarstr1": " Press a key ",
+      "statusbarstr2": ""
+    },
+    {
+      "function": "Windowstart"
+    }
+  ]
+}

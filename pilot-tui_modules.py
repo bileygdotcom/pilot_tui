@@ -26,6 +26,7 @@ import curses
 import time
 #modules in folder
 sys.path.insert(1, './modules')
+import json
 import purge
 import where
 import getPic
@@ -78,6 +79,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     ScreenN = 0
     serverON = True
     servSelect = False
+    sel = False
     
     # Declaration of about strings
     B = '\U00002588'
@@ -124,10 +126,6 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         center_y = int((height// 2))
         center_x = int((width // 2))
 
-        # functions list (experimental)
-        f1 = renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-        funcList = [f1]
-        
         ################################################################
         ## DEFINITION OF KEYS   ########################################
         ################################################################
@@ -166,38 +164,62 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     servSelect = 4
             
         ## END OF DEFINITION OF F-KEYS #################################
-        
- 
-              
+
         ################################################################
         # MENUSTATE = 0 ################################################
         ################################################################
         
         # Render Status Bar
-        bar.renderStatusBar(stdscr, Status, height, width)
+        #bar.renderStatusBar(stdscr, Status, height, width)
         
         if MenuState == 0:
             showWindow = False
-            
-        # Status 0. Logo
-        if Status == 0:
-            tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
-            bar.renderTopper(stdscr, width)
-            funcList[0]
-            #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderSubtitle(stdscr, start_y, start_x_title, title)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firsttime == False:
-                Status = renderWindow.windowStart(center_x, center_y, k)
-                
+
+        # Status 0.
+        def sceneryReader(Status):
+            with open("./Scenery/Scenery_" + str(Status) + ".json", 'r') as j:
+                json_data = json.load(j)
+                functions = json_data['functions']
+                for n in range(len(functions)):
+                    function = functions[n]
+                    funcName = function["function"]
+                    if funcName == "Image":
+                        tilist = getPic.loadImage2(function["imagePath"])
+                        renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+                    if funcName == "Topper":
+                        bar.renderTopper(stdscr, width)
+                    if funcName == "Subtitle":
+                        bar.renderSubtitle(stdscr, start_y, start_x_title, title)
+                    if funcName == "Statusbar":
+                        statusbarstr1 = function["statusbarstr1"]
+                        statusbarstr2 = function["statusbarstr2"]
+                        bar.renderStatusBar(stdscr, Status, height, width, statusbarstr1, statusbarstr2)
+                    if funcName == "Windowstart":
+                        if firsttime == False:
+                            a1 = renderWindow.windowStart(center_x, center_y, k)
+                        else:
+                            a1 = 0
+                        return a1
+                    if funcName == "Switchselect":
+                        switchSelect.serverSelect(center_x, center_y, servSelect, B, serverON)
+                        a1 = 1
+                        return a1
+
+        a1 = sceneryReader(Status)
+        sceneryReader(a1)
+
         # Status 1. Check
-        if Status == 1:
+        if Status == 100:
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             bar.renderTopper(stdscr, width)
-            funcList[0]
+            #funkList["Image"]
+            funkList["Topper"]
+            funkList["Image"]
+            funkList["Subtitle"]
+            funkList["Statusbar"]
             #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderSubtitle(stdscr, start_y, start_x_title, title)
-            bar.renderStatusBar(stdscr, Status, height, width)
+            #bar.renderSubtitle(stdscr, start_y, start_x_title, title)
+            #bar.renderStatusBar(stdscr, Status, height, width)
             #Status = renderWindowOverLogo()
             if direxists == True and fileexists == True:
                 outstring1 = " STATUS:  "
@@ -483,7 +505,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             installed = True
             tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
             bar.renderTopper(stdscr, width)
-            funcList[0]
+            funkList["Image"]
             #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
             #renderImage()
             bar.renderSubtitle(stdscr, start_y, start_x_title, title)

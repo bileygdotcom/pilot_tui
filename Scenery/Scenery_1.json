@@ -1,0 +1,19 @@
+{
+  "functions": [
+    {
+      "function": "Image",
+      "imagePath": "./image/00_pilottui-logo.ti"
+    },
+    {
+      "function": "Topper"
+    },
+    {
+      "function": "Statusbar",
+      "statusbarstr1": " F7 - admin | F8 - purge | F9 - instl | F10 - alt  | F11 - fscr | F12 - EXIT ",
+      "statusbarstr2": " F1 - help  | F2 - servr | F3 -       | F4 -       | F5 - bases | F6 - upgrd "
+    },
+    {
+      "function": "Switchselect"
+    }
+  ]
+}
