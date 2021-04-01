@@ -15,10 +15,10 @@ def windowStart(center_x, center_y, k):
     tw1.attroff(curses.color_pair(CP))
     if k == ord('s'):
         colA = 5
-        Status = 1
+        #Status = 1
     else:
         colA = 6
-        Status = 0
+        #Status = 0
     tw1.attron(curses.color_pair(CP))
     tw1.addstr(2, 6, "PRESS")
     tw1.attroff(curses.color_pair(CP))
@@ -31,7 +31,7 @@ def windowStart(center_x, center_y, k):
     tw1.border()
     tw1.refresh()
     time.sleep(0.5)
-    return Status
+    #return Status
 
 
 def smallWindow(center_x, center_y, funcText, moveY):

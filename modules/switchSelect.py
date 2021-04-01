@@ -93,7 +93,7 @@ def serverSelect(center_x, center_y, servSelect, B, serverON):
     CP = 5
     tw2 = curses.newwin(hgt, wdh, WY, WX)
     tw2.attron(curses.color_pair(CP))
-    tw2.addstr(1, 1, "    STATUS    ")
+    tw2.addstr(1, 1, " SERVER SLOTS ")
     tw2.attroff(curses.color_pair(CP))
     tw2.border()
     tw2.refresh()
