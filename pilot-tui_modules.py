@@ -80,13 +80,14 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     serverON = True
     servSelect = False
     sel = False
+    selServ = 1
 
     # server slots matrix
     # [selected, installed, launched, autostart, version]
-    serverSlot1 = [False, False, False, False, False]
-    serverSlot2 = [False, False, False, False, False]
-    serverSlot3 = [False, False, False, False, False]
-    serverSlot4 = [False, False, False, False, False]
+    serverSlot1 = [False, True, True, False, False]
+    serverSlot2 = [False, False, False, True, False]
+    serverSlot3 = [False, True, False, False, False]
+    serverSlot4 = [False, False, True, False, False]
     serverSlots = [False, serverSlot1, serverSlot2, serverSlot3, serverSlot4]
     
     # Declaration of about strings
@@ -201,16 +202,27 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                         renderWindow.windowStart(center_x, center_y, k)
 
                 if funcName == "Switchselect":
+                    serverSlots
                     if k == ord('1'):
-                        servSelect = 1
+                        selServ = 1
                     if k == ord('2'):
-                        servSelect = 2
+                        selServ = 2
                     if k == ord('3'):
-                        servSelect = 3
+                        selServ = 3
                     if k == ord('4'):
-                        servSelect = 4
+                        selServ = 4
+
+                    for ss in range(1,5):
+                        serverSlots[ss][0] = False
+                    serverSlots[selServ][0] = True
+
+                    if k == curses.KEY_F3:
+                        serverSlots[selServ][2] = not serverSlots[selServ][2]
+                    if k == curses.KEY_F4:
+                        serverSlots[selServ][3] = not serverSlots[selServ][3]
+
                     time.sleep(0.1)
-                    switchSelect.serverSelect(center_x, center_y, servSelect, B, serverON)
+                    switchSelect.serverSelect(center_x, center_y, serverSlots, B, serverON)
         
         #cursor move works if right before the refresh()
         #stdscr.move(cursor_y, cursor_x)
