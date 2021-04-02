@@ -13,7 +13,7 @@
       "statusbarstr2": " F1 - help  | F2 - servr | F3 - launc | F4 - autst | F5 - bases | F6 - upgrd "
     },
     {
-      "function": "Switchselect"
+      "function": "Helppage"
     }
   ]
 }

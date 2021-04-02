@@ -140,26 +140,38 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         ################################################################
         
         ## F-KEYS ##
-        
-        if installed == True:
+
+        if Status == 0:
+            if k == ord('s'):
+                Status = 1
+
+        if Status == 1:
             if k == curses.KEY_F1:
-                ScreenN = 1
+                Status = 2
+
+        if Status == 2:
             if k == curses.KEY_F2:
-                ScreenN = 2
-            if k == curses.KEY_F3:
-                ScreenN = 3
-            if k == curses.KEY_F4:
-                ScreenN = 4
-            if k == curses.KEY_F5:
-                ScreenN = 5
-            if k == curses.KEY_F6:
-                ScreenN = 6
-            if k == curses.KEY_F7:
-                StatusN = 7
-            if k == curses.KEY_F8:
-                StatusN = 8
-            if k == curses.KEY_F9:
-                StatusN = 9
+                Status = 1
+        
+        #if installed == True:
+            #if k == curses.KEY_F1:
+                #ScreenN = 1
+            #if k == curses.KEY_F2:
+                #ScreenN = 2
+            #if k == curses.KEY_F3:
+                #ScreenN = 3
+            #if k == curses.KEY_F4:
+                #ScreenN = 4
+            #if k == curses.KEY_F5:
+                #ScreenN = 5
+            #if k == curses.KEY_F6:
+                #ScreenN = 6
+            #if k == curses.KEY_F7:
+                #StatusN = 7
+            #if k == curses.KEY_F8:
+                #StatusN = 8
+            #if k == curses.KEY_F9:
+                #StatusN = 9
             
         ## END OF DEFINITION OF F-KEYS #################################
 
@@ -171,59 +183,67 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             #showWindow = False
 
         # Status 0
+
         with open("./Scenery/Scenery_" + str(Status) + ".json", 'r') as j:
             json_data = json.load(j)
             functions = json_data['functions']
-            for n in range(len(functions)):
-                function = functions[n]
-                funcName = function["function"]
 
-                if funcName == "Image":
-                    tilist = getPic.loadImage2(function["imagePath"])
-                    renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+        for n in range(len(functions)):
+            function = functions[n]
+            funcName = function["function"]
 
-                if funcName == "Topper":
-                    bar.renderTopper(stdscr, width)
+            if funcName == "Image":
+                tilist = getPic.loadImage2(function["imagePath"])
+                renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
 
-                if funcName == "Subtitle":
-                    bar.renderSubtitle(stdscr, start_y, start_x_title, title)
+            if funcName == "Topper":
+                bar.renderTopper(stdscr, width)
 
-                if funcName == "Statusbar":
-                    statusbarstr1 = function["statusbarstr1"]
-                    statusbarstr2 = function["statusbarstr2"]
-                    bar.renderStatusBar(stdscr, Status, height, width, statusbarstr1, statusbarstr2)
+            if funcName == "Subtitle":
+                bar.renderSubtitle(stdscr, start_y, start_x_title, title)
 
-                if funcName == "Windowstart":
-                    if k == ord('s'):
-                        Status = 1
-                    if firsttime == True:
-                        firsttime = False
-                    else:
-                        renderWindow.windowStart(center_x, center_y, k)
+            if funcName == "Statusbar":
+                statusbarstr1 = function["statusbarstr1"]
+                statusbarstr2 = function["statusbarstr2"]
+                bar.renderStatusBar(stdscr, Status, height, width, statusbarstr1, statusbarstr2)
 
-                if funcName == "Switchselect":
-                    serverSlots
-                    if k == ord('1'):
-                        selServ = 1
-                    if k == ord('2'):
-                        selServ = 2
-                    if k == ord('3'):
-                        selServ = 3
-                    if k == ord('4'):
-                        selServ = 4
+            if funcName == "Windowstart":
+                #if k == ord('s'):
+                    #Status = 1
+                if firsttime == True:
+                    firsttime = False
+                else:
+                    renderWindow.windowStart(center_x, center_y, k)
 
-                    for ss in range(1,5):
-                        serverSlots[ss][0] = False
-                    serverSlots[selServ][0] = True
+            if funcName == "Helppage":
+                helpPage.screenHelp(center_x, center_y)
 
-                    if k == curses.KEY_F3:
-                        serverSlots[selServ][2] = not serverSlots[selServ][2]
-                    if k == curses.KEY_F4:
-                        serverSlots[selServ][3] = not serverSlots[selServ][3]
+            if funcName == "Switchselect":
+                #serverSlots select with keys 1-4
+                if k == ord('1'):
+                    selServ = 1
+                if k == ord('2'):
+                    selServ = 2
+                if k == ord('3'):
+                    selServ = 3
+                if k == ord('4'):
+                    selServ = 4
 
-                    time.sleep(0.1)
-                    switchSelect.serverSelect(center_x, center_y, serverSlots, B, serverON)
-        
+                # to move arrows
+                for ss in range(1,5):
+                    serverSlots[ss][0] = False
+                serverSlots[selServ][0] = True
+
+                # F3, F4 to move switchers
+                if k == curses.KEY_F3:
+                    serverSlots[selServ][2] = not serverSlots[selServ][2]
+                if k == curses.KEY_F4:
+                    serverSlots[selServ][3] = not serverSlots[selServ][3]
+
+                # launch renderer
+                time.sleep(0.1)
+                switchSelect.serverSelect(center_x, center_y, serverSlots, B, serverON)
+
         #cursor move works if right before the refresh()
         #stdscr.move(cursor_y, cursor_x)
         
