@@ -43,6 +43,8 @@ import renderWindow
 import initColor
 from modules import switchSelect
 import loadUrl
+import stopServices
+import selectServerVersion
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -85,10 +87,10 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
     # server slots matrix
     # [selected, installed, launched, autostart, version]
-    serverSlot1 = [False, True, True, False, False]
-    serverSlot2 = [False, False, False, True, False]
-    serverSlot3 = [False, True, False, False, False]
-    serverSlot4 = [False, False, True, False, False]
+    serverSlot1 = [False, False, False, False, False]
+    serverSlot2 = [False, False, False, False, False]
+    serverSlot3 = [False, False, False, False, False]
+    serverSlot4 = [False, False, False, False, False]
     serverSlots = [False, serverSlot1, serverSlot2, serverSlot3, serverSlot4]
     
     # Declaration of about strings
@@ -120,6 +122,11 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     ##############################################
         
     while (k != curses.KEY_F12 or tuiQuit == True):
+
+        # Existance
+        for sli in range(1,5):
+            slotPath = softpath + 'slot_' + str(sli)
+            serverSlots[sli][1] = where.existance(slotPath)
 
         # Initialization
         stdscr.erase()
@@ -154,9 +161,11 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             if k == curses.KEY_F2:
                 Status = 1
 
-        if Status == 1 or 2:
+        if Status == 1 or Status == 2:
             if k == curses.KEY_F9:
                 Status = 3
+            if k == curses.KEY_F8:
+                Status = 4
             
         ## END OF DEFINITION OF F-KEYS #################################
 
@@ -199,6 +208,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
             if funcName == "Helppage":
                 helpPage.screenHelp(center_x, center_y)
+                Status = 1
 
             if funcName == "Switchselect":
                 #serverSlots select with keys 1-4
@@ -228,6 +238,10 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
                 #switchselector end
 
+            if funcName == "Selectserverversion":
+                selectServerVersion.window(center_x, center_y, selServ)
+                Status = 5
+
             if funcName == "Construction":
                 slotPath = softpath + 'slot_' + str(selServ)
                 direx = where.existance(slotPath)
@@ -247,6 +261,34 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     renderWindow.smallWindow(center_x, center_y, "Server was unzipped.", 0)
                     loadUrl.unzipBase(slotPath)
                     renderWindow.smallWindow(center_x, center_y, "Bases were unzipped.", 3)
+                Status = 1
+
+            if funcName == "Purge":
+                slotPath = softpath + 'slot_' + str(selServ)
+                direx = where.existance(slotPath)
+                if direx == False:
+                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", 0)
+                else:
+                    if serverSlots[selServ][3] == True:
+                        stopServices.stopPilotServer(selServ)
+                        renderWindow.smallWindow(center_x, center_y, "Services are stopped.", 0)
+                    else:
+                        renderWindow.smallWindow(center_x, center_y, "Services were stopped.", 0)
+                    if serverSlots[selServ][4] == True:
+                        stopServices.stopPilotUpdate(selServ)
+                        renderWindow.smallWindow(center_x, center_y, "Update is stopped.", 0)
+                    else:
+                        renderWindow.smallWindow(center_x, center_y, "Update was stopped.", 0)
+
+                    if serverSlots[selServ][0] == True:
+                        stopServices.disablePilotServices(selServ)
+                        renderWindow.smallWindow(center_x, center_y, "Services are disabled.", 3)
+                    else:
+                        renderWindow.smallWindow(center_x, center_y, "Services were disabled.", 3)
+
+                    purge.removePilotDirectory(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Directory is removed.", 6)
+                Status = 1
 
         #cursor move works if right before the refresh()
         #stdscr.move(cursor_y, cursor_x)

@@ -2,18 +2,18 @@
   "functions": [
     {
       "function": "Image",
-      "imagePath": "./image/06_Construction.ti"
+      "imagePath": "./image/03_Purging.ti"
     },
     {
       "function": "Topper"
     },
     {
       "function": "Statusbar",
-      "statusbarstr1": " ... constructing server ",
+      "statusbarstr1": " ... purging server ",
       "statusbarstr2": "  "
     },
     {
-      "function": "Selectserverversion"
+      "function": "Purge"
     }
   ]
 }

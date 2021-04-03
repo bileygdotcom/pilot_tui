@@ -16,12 +16,16 @@ def downloadBase(slotPath):
     urllib.request.urlretrieve(url, basePath + '/Databases.zip')
     
 def unzipServer(slotPath):
+    dir = os.path.abspath(os.curdir)
     os.chdir(slotPath)
     z = zipfile.ZipFile('pilot-server.zip', 'r')
     z.extractall()
+    os.chdir(dir)
 
 def unzipBase(slotPath):
+    dir = os.path.abspath(os.curdir)
     basePath = slotPath + "/bases"
     os.chdir(basePath)
     z = zipfile.ZipFile('Databases.zip', 'r')
     z.extractall()
+    os.chdir(dir)
