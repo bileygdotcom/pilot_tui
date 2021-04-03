@@ -1,8 +1,8 @@
 # where.py
 import os
 
-def existance():
-    softpath = '/opt/pilot-server'
+def existance(softpath):
+    #softpath = '/opt/pilot-server'
     if os.path.isdir(softpath):
         direx = True
         if os.path.isfile(softpath+'/pilot-tui'):
@@ -12,4 +12,5 @@ def existance():
     else:
         direx = False
         filex = False
-    return direx, filex
+    #return direx, filex
+    return direx

@@ -1,0 +1,19 @@
+{
+  "functions": [
+    {
+      "function": "Image",
+      "imagePath": "./image/06_Construction.ti"
+    },
+    {
+      "function": "Topper"
+    },
+    {
+      "function": "Statusbar",
+      "statusbarstr1": " ... constructing server ",
+      "statusbarstr2": "  "
+    },
+    {
+      "function": "Construction"
+    }
+  ]
+}

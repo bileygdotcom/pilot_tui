@@ -42,6 +42,7 @@ import helpPage
 import renderWindow
 import initColor
 from modules import switchSelect
+import loadUrl
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -57,7 +58,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     showWindow = True
     out = "currently no comands"
     err = "no messages yet"
-    softpath = '/opt/pilot-server'
+    softpath = '/opt/pilot-servers/'
     Ftitle = " No selection "
     MenuState = 0
     stringaz = ""
@@ -97,7 +98,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     keystr = "bileyg | Sankt-Peterburg"
 
     # Existance
-    direxists, fileexists = where.existance()
+    #direxists, fileexists = where.existance()
     
     #number text
     N_text1 = " 1 "
@@ -152,42 +153,23 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         if Status == 2:
             if k == curses.KEY_F2:
                 Status = 1
-        
-        #if installed == True:
-            #if k == curses.KEY_F1:
-                #ScreenN = 1
-            #if k == curses.KEY_F2:
-                #ScreenN = 2
-            #if k == curses.KEY_F3:
-                #ScreenN = 3
-            #if k == curses.KEY_F4:
-                #ScreenN = 4
-            #if k == curses.KEY_F5:
-                #ScreenN = 5
-            #if k == curses.KEY_F6:
-                #ScreenN = 6
-            #if k == curses.KEY_F7:
-                #StatusN = 7
-            #if k == curses.KEY_F8:
-                #StatusN = 8
-            #if k == curses.KEY_F9:
-                #StatusN = 9
+
+        if Status == 1 or 2:
+            if k == curses.KEY_F9:
+                Status = 3
             
         ## END OF DEFINITION OF F-KEYS #################################
 
         ################################################################
-        # MENUSTATE = 0 ################################################
+        # SCENERY PROCESSOR ############################################
         ################################################################
-        
-        #if MenuState == 0:
-            #showWindow = False
 
-        # Status 0
-
+        # open next scenery
         with open("./Scenery/Scenery_" + str(Status) + ".json", 'r') as j:
             json_data = json.load(j)
             functions = json_data['functions']
 
+        # run around all functions in scenery
         for n in range(len(functions)):
             function = functions[n]
             funcName = function["function"]
@@ -243,6 +225,28 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 # launch renderer
                 time.sleep(0.1)
                 switchSelect.serverSelect(center_x, center_y, serverSlots, B, serverON)
+
+                #switchselector end
+
+            if funcName == "Construction":
+                slotPath = softpath + 'slot_' + str(selServ)
+                direx = where.existance(slotPath)
+                if direx == True:
+                    renderWindow.smallWindow(center_x, center_y, "Server exists", 0)
+                else:
+                    loadUrl.makeFolder(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Construction process:", -6)
+                    renderWindow.smallWindow(center_x, center_y, "The folder was created.", -3)
+                    renderWindow.smallWindow(center_x, center_y, "Downloading server....", 0)
+                    loadUrl.downloadServer(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Server was downloaded.", 0)
+                    renderWindow.smallWindow(center_x, center_y, "Downloading bases....", 3)
+                    loadUrl.downloadBase(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Bases were downloaded.", 3)
+                    loadUrl.unzipServer(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Server was unzipped.", 0)
+                    loadUrl.unzipBase(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Bases were unzipped.", 3)
 
         #cursor move works if right before the refresh()
         #stdscr.move(cursor_y, cursor_x)
