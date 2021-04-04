@@ -2,12 +2,21 @@
 import os
 import urllib.request
 import zipfile
+import time
+
+def makeCustom(softpath):
+    custom = softpath + 'custom/'
+    if os.path.isdir(custom) == False:
+        os.mkdir(custom)
 
 def makeFolder(slotPath):
     os.makedirs(slotPath + '/bases')
 
-def downloadServer(slotPath):
-    url = 'https://pilot.ascon.ru/release/pilot-server.zip'
+def downloadServer(slotPath, serverVersionUrl):
+    url = serverVersionUrl
+    print(url)
+    time.sleep(2.0)
+    headers = {'User-Agent': 'Mozilla/5.0'}
     urllib.request.urlretrieve(url, slotPath + '/pilot-server.zip')
 
 def downloadBase(slotPath):

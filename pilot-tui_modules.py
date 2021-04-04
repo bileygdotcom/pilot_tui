@@ -161,6 +161,10 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             if k == curses.KEY_F2:
                 Status = 1
 
+        if Status == 3:
+            if k == curses.KEY_F9:
+                Status = 5
+
         if Status == 1 or Status == 2:
             if k == curses.KEY_F9:
                 Status = 3
@@ -239,8 +243,24 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 #switchselector end
 
             if funcName == "Selectserverversion":
+                move = False
                 selectServerVersion.window(center_x, center_y, selServ)
-                Status = 5
+                if k == ord('1'):
+                    move = True
+                    serverVersionUrl = 'https://pilot.ascon.ru/release/pilot-server.zip'
+                if k == ord('2'):
+                    serverVersionUrl = 'https://pilot.ascon.ru/beta/pilot-server.zip'
+                    move = True
+                if k == ord('3'):
+                    serverVersionUrl = 'https://pilot.ascon.ru/alpha/pilot-server.zip'
+                    move = True
+                if k == ord('4'):
+                    inputUrl = renderWindow.inputWindow(center_x, center_y, "Input URL:", 0)
+                    serverVersionUrl = inputUrl
+                    move = True
+                if move == True:
+                    time.sleep(0.2)
+                    Status = 5
 
             if funcName == "Construction":
                 slotPath = softpath + 'slot_' + str(selServ)
@@ -252,7 +272,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     renderWindow.smallWindow(center_x, center_y, "Construction process:", -6)
                     renderWindow.smallWindow(center_x, center_y, "The folder was created.", -3)
                     renderWindow.smallWindow(center_x, center_y, "Downloading server....", 0)
-                    loadUrl.downloadServer(slotPath)
+                    loadUrl.downloadServer(slotPath, serverVersionUrl)
                     renderWindow.smallWindow(center_x, center_y, "Server was downloaded.", 0)
                     renderWindow.smallWindow(center_x, center_y, "Downloading bases....", 3)
                     loadUrl.downloadBase(slotPath)

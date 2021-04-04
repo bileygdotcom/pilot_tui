@@ -58,16 +58,17 @@ def inputWindow(center_x, center_y, promtText, moveY):
     WX = (center_x - 39)
     WY = (center_y - 1 + moveY)
     CP = 1
-    tw1 = curses.newwin(3, 33, WY, WX)
+    tw1 = curses.newwin(3, 73, WY, WX)
     tw1.attron(curses.color_pair(CP))
     tw1.addstr(1, 1, promtText)
     tw1.attroff(curses.color_pair(CP))
     tw1.border()
-    input = tw1.getstr(1, 15, 30)
+    input = tw1.getstr(1, 11, 80)
+    inputUrlTail = str(input)[2:-1]
     tw1.refresh()
     curses.noecho()
     time.sleep(0.5)
-    return input
+    return inputUrlTail
 
 
 def renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight, Ypos, btn, btnText, statusNext,
@@ -86,12 +87,12 @@ def renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outst
     if k == ord(btn):
         colA = 5
         colB = 6
-        Status = statusNext
+        #Status = statusNext
         Funkie = True
     else:
         colA = 6
         colB = 6
-        Status = statusPres
+        #Status = statusPres
         Funkie = False
     tw1.attron(curses.color_pair(colA))
     tw1.addstr(4, 20, btnText)
@@ -102,4 +103,4 @@ def renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outst
     tw1.border()
     tw1.refresh()
     time.sleep(0.5)
-    return Status
+    #return Status
