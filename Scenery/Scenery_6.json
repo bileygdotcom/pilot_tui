@@ -1,0 +1,19 @@
+{
+  "functions": [
+    {
+      "function": "Image",
+      "imagePath": "./image/12_King.ti"
+    },
+    {
+      "function": "Topper"
+    },
+    {
+      "function": "Statusbar",
+      "statusbarstr1": " ... set up administrator's login/password ",
+      "statusbarstr2": "  "
+    },
+    {
+      "function": "Setadmin"
+    }
+  ]
+}

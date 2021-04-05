@@ -45,6 +45,9 @@ from modules import switchSelect
 import loadUrl
 import stopServices
 import selectServerVersion
+import setUp
+import testServer
+import chmodX
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -170,6 +173,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 Status = 3
             if k == curses.KEY_F8:
                 Status = 4
+            if k == curses.KEY_F2:
+                Status = 6
             
         ## END OF DEFINITION OF F-KEYS #################################
 
@@ -255,62 +260,77 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     serverVersionUrl = 'https://pilot.ascon.ru/alpha/pilot-server.zip'
                     move = True
                 if k == ord('4'):
-                    inputUrl = renderWindow.inputWindow(center_x, center_y, "Input URL:", 3)
+                    #inputWindow(center_x, center_y, promtText, moveX, moveY, lenght, gap)
+                    inputUrl = renderWindow.inputWindow(center_x, center_y, "Input URL:", -39, 3, 77, 13)
                     serverVersionUrl = inputUrl
-                    renderWindow.smallWindow(center_x, center_y, "Got it! Press a key.", 6)
+                    #renderWindow.smallWindow(center_x, center_y, "Got it! Press a key.", 9)
                     move = True
                 if move == True:
                     time.sleep(0.2)
                     Status = 5
+                    renderWindow.smallWindow(center_x, center_y, "  Got it! Press a key.", -13, 6)
 
             if funcName == "Construction":
                 slotPath = softpath + 'slot_' + str(selServ)
                 direx = where.existance(slotPath)
                 if direx == True:
-                    renderWindow.smallWindow(center_x, center_y, "Server exists", 0)
+                    renderWindow.smallWindow(center_x, center_y, "Server exists", -39, 0)
                 else:
                     loadUrl.makeFolder(slotPath)
-                    renderWindow.smallWindow(center_x, center_y, "Construction process:", -6)
-                    renderWindow.smallWindow(center_x, center_y, "The folder was created.", -3)
-                    renderWindow.smallWindow(center_x, center_y, "Downloading server....", 0)
+                    renderWindow.smallWindow(center_x, center_y, "Construction process:", -39, -6)
+                    renderWindow.smallWindow(center_x, center_y, "The folder was created.", -39, -3)
+                    renderWindow.smallWindow(center_x, center_y, "Downloading server....", -39, 0)
                     loadUrl.downloadServer(slotPath, serverVersionUrl)
-                    renderWindow.smallWindow(center_x, center_y, "Server was downloaded.", 0)
-                    renderWindow.smallWindow(center_x, center_y, "Downloading bases....", 3)
+                    renderWindow.smallWindow(center_x, center_y, "Server was downloaded.", -39, 0)
+                    renderWindow.smallWindow(center_x, center_y, "Downloading bases....", -39, 3)
                     loadUrl.downloadBase(slotPath)
-                    renderWindow.smallWindow(center_x, center_y, "Bases were downloaded.", 3)
+                    renderWindow.smallWindow(center_x, center_y, "Bases were downloaded.", -39, 3)
                     loadUrl.unzipServer(slotPath)
-                    renderWindow.smallWindow(center_x, center_y, "Server was unzipped.", 0)
+                    renderWindow.smallWindow(center_x, center_y, "Server was unzipped.", -39, 0)
+                    chmodX.setX(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "chmod Ascon.Pilot.Daemon", -39, 0)
                     loadUrl.unzipBase(slotPath)
-                    renderWindow.smallWindow(center_x, center_y, "Bases were unzipped.", 3)
-                    renderWindow.smallWindow(center_x, center_y, "Ready. Press a key.", 6)
+                    renderWindow.smallWindow(center_x, center_y, "Bases were unzipped.", -39, 3)
+                    renderWindow.smallWindow(center_x, center_y, "Ready. Press a key.", -39, 6)
+                Status = 6
+
+            if funcName == "Setadmin":
+                slotPath = softpath + 'slot_' + str(selServ)
+                renderWindow.smallWindow(center_x, center_y, "Add Administrator.", -39, -6)
+                #inputWindow(center_x, center_y, promtText, moveX, moveY, lenght, gap)
+                login = renderWindow.inputWindow(center_x, center_y, "Enter login: ", -39, -3, 27, 15)
+                passw = renderWindow.inputWindow(center_x, center_y, "Enter passw: ", -39, 0, 27, 15)
+                setUp.rights(slotPath, login, passw)
+                time.sleep(1.5)
+                renderWindow.smallWindow(center_x, center_y, "Got it!...", -39, 3)
                 Status = 1
 
             if funcName == "Purge":
                 slotPath = softpath + 'slot_' + str(selServ)
                 direx = where.existance(slotPath)
                 if direx == False:
-                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", 0)
+                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
                 else:
                     if serverSlots[selServ][3] == True:
                         stopServices.stopPilotServer(selServ)
-                        renderWindow.smallWindow(center_x, center_y, "Services are stopped.", -3)
+                        renderWindow.smallWindow(center_x, center_y, "Services are stopped.", -39, -3)
                     else:
-                        renderWindow.smallWindow(center_x, center_y, "Services were stopped.", -3)
+                        renderWindow.smallWindow(center_x, center_y, "Services were stopped.", -39, -3)
                     if serverSlots[selServ][4] == True:
                         stopServices.stopPilotUpdate(selServ)
-                        renderWindow.smallWindow(center_x, center_y, "Update is stopped.", -3)
+                        renderWindow.smallWindow(center_x, center_y, "Update is stopped.", -39, -3)
                     else:
-                        renderWindow.smallWindow(center_x, center_y, "Update was stopped.", -3)
+                        renderWindow.smallWindow(center_x, center_y, "Update was stopped.", -39, -3)
 
                     if serverSlots[selServ][0] == True:
                         stopServices.disablePilotServices(selServ)
-                        renderWindow.smallWindow(center_x, center_y, "Services are disabled.", 0)
+                        renderWindow.smallWindow(center_x, center_y, "Services are disabled.", -39, 0)
                     else:
-                        renderWindow.smallWindow(center_x, center_y, "Services were disabled.", 0)
+                        renderWindow.smallWindow(center_x, center_y, "Services were disabled.", -39, 0)
 
                     purge.removePilotDirectory(slotPath)
-                    renderWindow.smallWindow(center_x, center_y, "Directory is removed.", 3)
-                    renderWindow.smallWindow(center_x, center_y, "Purged. Press a key.", 6)
+                    renderWindow.smallWindow(center_x, center_y, "Directory is removed.", -39, 3)
+                    renderWindow.smallWindow(center_x, center_y, "Purged. Press a key.", -39, 6)
                 Status = 1
 
         #cursor move works if right before the refresh()

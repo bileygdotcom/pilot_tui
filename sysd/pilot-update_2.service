@@ -16,9 +16,9 @@ Type=oneshot
 
 RemainAfterExit=yes
 
-WorkingDirectory=/opt/pilot-server
+WorkingDirectory=/opt/pilot-servers/slot_2
 
-ExecStart=/bin/sh /opt/pilot-server/bin/updateScript.sh /opt/pilot-server/Update /opt/pilot-server
+ExecStart=/bin/sh /opt/pilot-servers/slot_2/bin/updateScript.sh /opt/pilot-servers/slot_2/Update /opt/pilot-servers/slot_2
 
  
 

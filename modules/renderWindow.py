@@ -34,11 +34,11 @@ def windowStart(center_x, center_y, k):
     #return Status
 
 
-def smallWindow(center_x, center_y, funcText, moveY):
+def smallWindow(center_x, center_y, funcText, moveX, moveY):
     import curses
     import time
     tw1 = curses.initscr()
-    WX = (center_x - 39)
+    WX = (center_x + moveX)
     WY = (center_y - 1 + moveY)
     CP = 1
     tw1 = curses.newwin(3, 27, WY, WX)
@@ -50,20 +50,20 @@ def smallWindow(center_x, center_y, funcText, moveY):
     time.sleep(0.5)
 
 
-def inputWindow(center_x, center_y, promtText, moveY):
+def inputWindow(center_x, center_y, promtText, moveX, moveY, lenght, gap):
     import curses
     import time
     curses.echo()
     tw1 = curses.initscr()
-    WX = (center_x - 39)
+    WX = (center_x + moveX)
     WY = (center_y - 1 + moveY)
     CP = 1
-    tw1 = curses.newwin(3, 73, WY, WX)
+    tw1 = curses.newwin(3, lenght, WY, WX)
     tw1.attron(curses.color_pair(CP))
     tw1.addstr(1, 1, promtText)
     tw1.attroff(curses.color_pair(CP))
     tw1.border()
-    input = tw1.getstr(1, 12, 85)
+    input = tw1.getstr(1, gap, lenght - gap - 1)
     inputUrlTail = str(input)[2:-1]
     tw1.refresh()
     curses.noecho()

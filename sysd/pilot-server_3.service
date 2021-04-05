@@ -14,13 +14,13 @@ Group=pilotuser
 
 Type=simple
 
-WorkingDirectory=/opt/pilot-server
+WorkingDirectory=/opt/pilot-servers/slot_3
 
 Restart=always
 
 RestartSec=3
 
-ExecStart=/opt/pilot-server/Ascon.Pilot.Daemon /opt/pilot-server/settings.xml
+ExecStart=/opt/pilot-servers/slot_3/Ascon.Pilot.Daemon /opt/pilot-servers/slot_3/settings.xml
 
 ExecStop=/bin/kill -s 3 $MAINPID
 

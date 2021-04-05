@@ -21,7 +21,7 @@ def window(center_x, center_y, selServ):
     #tw1.addstr(10, 3, "    - Pilot-Server service start, stop & check abilities.")
     tw1.attroff(curses.color_pair(CP))
     tw1.attron(curses.color_pair(SP))
-    tw1.addstr(13, 3, "Select option & installation will begin soon.")
+    #tw1.addstr(13, 3, "Select option & installation will begin soon.")
     tw1.attroff(curses.color_pair(SP))
     tw1.attron(curses.color_pair(DP))
     tw1.addstr(5, 7, " 1 ")

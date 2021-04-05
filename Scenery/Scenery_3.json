@@ -9,7 +9,7 @@
     },
     {
       "function": "Statusbar",
-      "statusbarstr1": " ... and press F9 to install in on slot",
+      "statusbarstr1": "",
       "statusbarstr2": " Select server version..."
     },
     {
