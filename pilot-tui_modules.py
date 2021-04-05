@@ -255,8 +255,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     serverVersionUrl = 'https://pilot.ascon.ru/alpha/pilot-server.zip'
                     move = True
                 if k == ord('4'):
-                    inputUrl = renderWindow.inputWindow(center_x, center_y, "Input URL:", 0)
+                    inputUrl = renderWindow.inputWindow(center_x, center_y, "Input URL:", 3)
                     serverVersionUrl = inputUrl
+                    renderWindow.smallWindow(center_x, center_y, "Got it! Press a key.", 6)
                     move = True
                 if move == True:
                     time.sleep(0.2)
@@ -281,6 +282,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     renderWindow.smallWindow(center_x, center_y, "Server was unzipped.", 0)
                     loadUrl.unzipBase(slotPath)
                     renderWindow.smallWindow(center_x, center_y, "Bases were unzipped.", 3)
+                    renderWindow.smallWindow(center_x, center_y, "Ready. Press a key.", 6)
                 Status = 1
 
             if funcName == "Purge":
@@ -291,23 +293,24 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 else:
                     if serverSlots[selServ][3] == True:
                         stopServices.stopPilotServer(selServ)
-                        renderWindow.smallWindow(center_x, center_y, "Services are stopped.", 0)
+                        renderWindow.smallWindow(center_x, center_y, "Services are stopped.", -3)
                     else:
-                        renderWindow.smallWindow(center_x, center_y, "Services were stopped.", 0)
+                        renderWindow.smallWindow(center_x, center_y, "Services were stopped.", -3)
                     if serverSlots[selServ][4] == True:
                         stopServices.stopPilotUpdate(selServ)
-                        renderWindow.smallWindow(center_x, center_y, "Update is stopped.", 0)
+                        renderWindow.smallWindow(center_x, center_y, "Update is stopped.", -3)
                     else:
-                        renderWindow.smallWindow(center_x, center_y, "Update was stopped.", 0)
+                        renderWindow.smallWindow(center_x, center_y, "Update was stopped.", -3)
 
                     if serverSlots[selServ][0] == True:
                         stopServices.disablePilotServices(selServ)
-                        renderWindow.smallWindow(center_x, center_y, "Services are disabled.", 3)
+                        renderWindow.smallWindow(center_x, center_y, "Services are disabled.", 0)
                     else:
-                        renderWindow.smallWindow(center_x, center_y, "Services were disabled.", 3)
+                        renderWindow.smallWindow(center_x, center_y, "Services were disabled.", 0)
 
                     purge.removePilotDirectory(slotPath)
-                    renderWindow.smallWindow(center_x, center_y, "Directory is removed.", 6)
+                    renderWindow.smallWindow(center_x, center_y, "Directory is removed.", 3)
+                    renderWindow.smallWindow(center_x, center_y, "Purged. Press a key.", 6)
                 Status = 1
 
         #cursor move works if right before the refresh()

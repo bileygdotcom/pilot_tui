@@ -63,7 +63,7 @@ def inputWindow(center_x, center_y, promtText, moveY):
     tw1.addstr(1, 1, promtText)
     tw1.attroff(curses.color_pair(CP))
     tw1.border()
-    input = tw1.getstr(1, 11, 80)
+    input = tw1.getstr(1, 12, 85)
     inputUrlTail = str(input)[2:-1]
     tw1.refresh()
     curses.noecho()

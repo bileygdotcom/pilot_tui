@@ -14,7 +14,7 @@ def makeFolder(slotPath):
 
 def downloadServer(slotPath, serverVersionUrl):
     url = serverVersionUrl
-    print(url)
+    #print(url)
     time.sleep(2.0)
     headers = {'User-Agent': 'Mozilla/5.0'}
     urllib.request.urlretrieve(url, slotPath + '/pilot-server.zip')
