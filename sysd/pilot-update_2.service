@@ -18,7 +18,7 @@ RemainAfterExit=yes
 
 WorkingDirectory=/opt/pilot-servers/slot_2
 
-ExecStart=/bin/sh /opt/pilot-servers/slot_2/bin/updateScript.sh /opt/pilot-servers/slot_2/Update /opt/pilot-servers/slot_2
+ExecStart=/bin/sh /opt/pilot-servers/slot_2/bin/updateScript.sh /opt/pilot-servers/slot_2/Update /opt/pilot-servers/slot_2 pilot-server_2.service pilot-update_2.service
 
  
 

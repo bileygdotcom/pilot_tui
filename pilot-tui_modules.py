@@ -48,6 +48,7 @@ import selectServerVersion
 import setUp
 import testServer
 import chmodX
+import buildComplex
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -129,7 +130,9 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         # Existance
         for sli in range(1,5):
             slotPath = softpath + 'slot_' + str(sli)
-            serverSlots[sli][1] = where.existance(slotPath)
+            direx, filex = where.existance(slotPath)
+            if direx == True and filex == True:
+                serverSlots[sli][1] = True
 
         # Initialization
         stdscr.erase()
@@ -175,6 +178,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 Status = 4
             if k == curses.KEY_F2:
                 Status = 6
+            if k == curses.KEY_F7:
+                Status = 7
             
         ## END OF DEFINITION OF F-KEYS #################################
 
@@ -272,7 +277,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
             if funcName == "Construction":
                 slotPath = softpath + 'slot_' + str(selServ)
-                direx = where.existance(slotPath)
+                direx, filex = where.existance(slotPath)
                 if direx == True:
                     renderWindow.smallWindow(center_x, center_y, "Server exists", -39, 0)
                 else:
@@ -303,11 +308,11 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 setUp.rights(slotPath, login, passw)
                 time.sleep(1.5)
                 renderWindow.smallWindow(center_x, center_y, "Got it!...", -39, 3)
-                Status = 1
+                Status = 7
 
             if funcName == "Purge":
                 slotPath = softpath + 'slot_' + str(selServ)
-                direx = where.existance(slotPath)
+                direx, filex = where.existance(slotPath)
                 if direx == False:
                     renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
                 else:
@@ -332,6 +337,30 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     renderWindow.smallWindow(center_x, center_y, "Directory is removed.", -39, 3)
                     renderWindow.smallWindow(center_x, center_y, "Purged. Press a key.", -39, 6)
                 Status = 1
+
+            if funcName == "System":
+                ServN = str(selServ)
+                slotPath = softpath + 'slot_' + ServN
+                direx, filex = where.existance(slotPath)
+                if direx == False:
+                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
+                else:
+                    buildComplex.adduser(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "User 'pilotuser' was added.", -39, -3)
+                    time.sleep(0.5)
+                    buildComplex.service(slotPath, ServN)
+                    renderWindow.smallWindow(center_x, center_y, "Pilot-Server is Service now.", -39, 0)
+                    time.sleep(0.5)
+                    buildComplex.sudoers()
+                    renderWindow.smallWindow(center_x, center_y, "Automatization complete.", -39, 3)
+                    time.sleep(0.5)
+
+                    # write filex
+                    check = open(slotPath + '/pilot-tui', 'w')
+                    check.write(str(1))
+                    check.close()
+                Status = 1
+
 
         #cursor move works if right before the refresh()
         #stdscr.move(cursor_y, cursor_x)
