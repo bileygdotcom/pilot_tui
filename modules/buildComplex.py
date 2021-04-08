@@ -1,7 +1,8 @@
 # buildComplex.py
-import sys,os
-import curses
+import os
+#import curses
 import subprocess
+import shutil
 
 def adduser(slotPath):
     command = 'sudo adduser pilotuser --disabled-password --no-create-home --gecos username && echo "username:userpass" | chpasswd && chown pilotuser -Rv ' + slotPath
@@ -10,13 +11,34 @@ def adduser(slotPath):
     #err = str(p.stderr.read())
 
 def service(slotPath, ServN):
-    command1 = 'sudo mkdir '+slotPath+'/bin/ && mkdir '+slotPath+'/Update/ && cp ./sysd/updateScript.sh '+slotPath+'/bin/'
-    command2 = 'cp ./sysd/pilot-server_'+ServN+'.service /etc/systemd/system'
-    command3 = 'cp ./sysd/pilot-update_'+ServN+'.service /etc/systemd/system'
-    command4 = 'systemctl enable pilot-server_'+ServN+'.service && systemctl daemon-reload'
-    command = command1 + ' && ' + command2 + ' && ' + command3 + ' && ' + command4
+    os.mkdir(slotPath+'/bin/')
+    os.mkdir(slotPath + '/Update/')
+    shutil.copy('./sysd/updateScript.sh', slotPath+'/bin/')
+    shutil.copy('./sysd/pilot-server_' + ServN + '.service', '/etc/systemd/system')
+    shutil.copy('./sysd/pilot-update_'+ServN+'.service', '/etc/systemd/system')
+
+    command = 'systemctl enable pilot-server_'+ServN+'.service'
     subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
-    
+
+    command = 'systemctl daemon-reload'
+    subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+
+def serviceStart(ServN):
+    command = 'systemctl start pilot-server_'+ServN+'.service'
+    subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+
+def serviceStop(ServN):
+    command = 'systemctl stop pilot-server_'+ServN+'.service'
+    subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+
+def serviceEnable(ServN):
+    command = 'systemctl enable pilot-server_'+ServN+'.service'
+    subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+
+def serviceDisable(ServN):
+    command = 'systemctl disable pilot-server_'+ServN+'.service'
+    subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+
 def sudoers():
     sudoers = '/etc/sudoers'
     check = open('sudoers-add','r')

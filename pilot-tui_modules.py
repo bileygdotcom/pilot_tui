@@ -26,6 +26,7 @@ import curses
 import time
 #modules in folder
 sys.path.insert(1, './modules')
+import os
 import json
 import purge
 import where
@@ -49,6 +50,7 @@ import setUp
 import testServer
 import chmodX
 import buildComplex
+import pickle
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -91,11 +93,21 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
     # server slots matrix
     # [selected, installed, launched, autostart, version]
-    serverSlot1 = [False, False, False, False, False]
-    serverSlot2 = [False, False, False, False, False]
-    serverSlot3 = [False, False, False, False, False]
-    serverSlot4 = [False, False, False, False, False]
-    serverSlots = [False, serverSlot1, serverSlot2, serverSlot3, serverSlot4]
+    if os.path.isfile('./saves/serverslots'):
+        save = open('./saves/serverslots', 'rb')
+        serverSlots = pickle.load(save)
+        save.close()
+
+    else:
+        serverSlot1 = [False, False, False, False, False]
+        serverSlot2 = [False, False, False, False, False]
+        serverSlot3 = [False, False, False, False, False]
+        serverSlot4 = [False, False, False, False, False]
+        serverSlots = [False, serverSlot1, serverSlot2, serverSlot3, serverSlot4]
+        save = open('./saves/serverslots', 'wb')
+        pickle.dump(serverSlots, save)
+        save.close()
+
     
     # Declaration of about strings
     B = '\U00002588'
@@ -235,16 +247,29 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 if k == ord('4'):
                     selServ = 4
 
+                servN = str(selServ)
+
                 # to move arrows
                 for ss in range(1,5):
                     serverSlots[ss][0] = False
                 serverSlots[selServ][0] = True
 
                 # F3, F4 to move switchers
-                if k == curses.KEY_F3:
-                    serverSlots[selServ][2] = not serverSlots[selServ][2]
-                if k == curses.KEY_F4:
-                    serverSlots[selServ][3] = not serverSlots[selServ][3]
+                if serverSlots[selServ][1] == True:
+                    if k == curses.KEY_F3:
+                        serverSlots[selServ][2] = not serverSlots[selServ][2]
+                    if k == curses.KEY_F4:
+                        serverSlots[selServ][3] = not serverSlots[selServ][3]
+                    # start & stop service
+                    if serverSlots[selServ][2] == True:
+                        buildComplex.serviceStart(servN)
+                    else:
+                        buildComplex.serviceStop(servN)
+                    # enable & disable service
+                    if serverSlots[selServ][3] == True:
+                        buildComplex.serviceEnable(servN)
+                    else:
+                        buildComplex.serviceDisable(servN)
 
                 # launch renderer
                 time.sleep(0.1)
@@ -372,6 +397,12 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
         # Wait for next input
         k = stdscr.getch()
+
+    #saving the serverslot matrix on F12 exit
+    save = open('./saves/serverslots', 'wb')
+    pickle.dump(serverSlots, save)
+    save.close()
+
         
 
 def main():
