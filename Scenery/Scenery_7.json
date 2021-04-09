@@ -1,0 +1,19 @@
+{
+  "functions": [
+    {
+      "function": "Image",
+      "imagePath": "./image/08_System.ti"
+    },
+    {
+      "function": "Topper"
+    },
+    {
+      "function": "Statusbar",
+      "statusbarstr1": " ... convert server to systemd unit ",
+      "statusbarstr2": "  "
+    },
+    {
+      "function": "System"
+    }
+  ]
+}

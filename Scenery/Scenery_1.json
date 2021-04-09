@@ -9,8 +9,8 @@
     },
     {
       "function": "Statusbar",
-      "statusbarstr1": " F7 - admin | F8 - purge | F9 - instl | F10 - alt  | F11 - fscr | F12 - EXIT ",
-      "statusbarstr2": " F1 - help  | F2 - servr | F3 -       | F4 -       | F5 - bases | F6 - upgrd "
+      "statusbarstr1": " F7 - servr | F8 - purge | F9 - instl | F10 - alt  | F11 - fscr | F12 - EXIT ",
+      "statusbarstr2": " F1 - help  | F2 - admin | F3 - launc | F4 - autst | F5 - bases | F6 - upgrd "
     },
     {
       "function": "Switchselect"

@@ -2,21 +2,18 @@
   "functions": [
     {
       "function": "Image",
-      "imagePath": "./image/00_pilottui-logo.ti"
+      "imagePath": "./image/06_Construction.ti"
     },
     {
       "function": "Topper"
     },
     {
-      "function": "Subtitle"
-    },
-    {
       "function": "Statusbar",
       "statusbarstr1": "",
-      "statusbarstr2": ""
+      "statusbarstr2": " Select server version..."
     },
     {
-      "function": "Windowstart"
+      "function": "Selectserverversion"
     }
   ]
 }

@@ -1,0 +1,19 @@
+{
+  "functions": [
+    {
+      "function": "Image",
+      "imagePath": "./image/03_Purging.ti"
+    },
+    {
+      "function": "Topper"
+    },
+    {
+      "function": "Statusbar",
+      "statusbarstr1": " ... purging server ",
+      "statusbarstr2": "  "
+    },
+    {
+      "function": "Purge"
+    }
+  ]
+}

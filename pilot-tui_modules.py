@@ -26,15 +26,12 @@ import curses
 import time
 #modules in folder
 sys.path.insert(1, './modules')
+import os
 import json
 import purge
 import where
 import getPic
 import configure
-import loadIntoDirectory
-import setUp
-import testServer
-import buildComplex
 import connectDemoBases
 import renderImage
 import bar
@@ -42,6 +39,15 @@ import helpPage
 import renderWindow
 import initColor
 from modules import switchSelect
+import loadUrl
+import stopServices
+import selectServerVersion
+import setUp
+import chmodX
+import buildComplex
+import pickle
+import connectBase
+import testServer
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -57,7 +63,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     showWindow = True
     out = "currently no comands"
     err = "no messages yet"
-    softpath = '/opt/pilot-server'
+    softpath = '/opt/pilot-servers/'
     Ftitle = " No selection "
     MenuState = 0
     stringaz = ""
@@ -80,6 +86,32 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     serverON = True
     servSelect = False
     sel = False
+    selServ = 1
+    go = False
+
+    # server slots matrix
+    # [selected, installed, launched, autostart, version]
+    if os.path.isfile('./saves/serverslots'):
+        save = open('./saves/serverslots', 'rb')
+        serverSlots = pickle.load(save)
+        save.close()
+
+    else:
+        serverSlot1 = [False, False, False, False, False]
+        serverSlot2 = [False, False, False, False, False]
+        serverSlot3 = [False, False, False, False, False]
+        serverSlot4 = [False, False, False, False, False]
+        serverSlots = [False, serverSlot1, serverSlot2, serverSlot3, serverSlot4]
+        save = open('./saves/serverslots', 'wb')
+        pickle.dump(serverSlots, save)
+        save.close()
+
+    for sss in range(1,5):
+        if os.path.isfile(softpath+'slot_'+str(sss)):
+            serverSlots[sss][1] = True
+        else:
+            serverSlots[sss][1] = False
+
     
     # Declaration of about strings
     B = '\U00002588'
@@ -88,7 +120,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     keystr = "bileyg | Sankt-Peterburg"
 
     # Existance
-    direxists, fileexists = where.existance()
+    #direxists, fileexists = where.existance()
     
     #number text
     N_text1 = " 1 "
@@ -111,6 +143,15 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         
     while (k != curses.KEY_F12 or tuiQuit == True):
 
+        # Existance
+        for sli in range(1,5):
+            slotPath = softpath + 'slot_' + str(sli)
+            direx, filex = where.existance(slotPath)
+            if direx == True and filex == True:
+                serverSlots[sli][1] = True
+                #get server version
+                serverVersion = testServer.url()[13:]
+
         # Initialization
         stdscr.erase()
         height, width = stdscr.getmaxyx()
@@ -131,417 +172,263 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         ################################################################
         
         ## F-KEYS ##
-        
-        if installed == True:
+
+        if Status == 0:
+            if k == ord('s'):
+                Status = 1
+
+        if Status == 1:
             if k == curses.KEY_F1:
-                ScreenN = 1
-            if k == curses.KEY_F2:
-                ScreenN = 2
-            if k == curses.KEY_F3:
-                ScreenN = 3
-            if k == curses.KEY_F4:
-                ScreenN = 4
-            if k == curses.KEY_F5:
-                ScreenN = 5
-            if k == curses.KEY_F6:
-                ScreenN = 6
-            if k == curses.KEY_F7:
-                StatusN = 7
-            if k == curses.KEY_F8:
-                StatusN = 8
-            if k == curses.KEY_F9:
-                StatusN = 9
-            
-            ## Digits KEYS ##
-            if ScreenN == 2:
-                if k == ord('1'):
-                    servSelect = 1
-                if k == ord('2'):
-                    servSelect = 2
-                if k == ord('3'):
-                    servSelect = 3
-                if k == ord('4'):
-                    servSelect = 4
-            
-        ## END OF DEFINITION OF F-KEYS #################################
+                Status = 2
 
-        ################################################################
-        # MENUSTATE = 0 ################################################
-        ################################################################
-        
-        # Render Status Bar
-        #bar.renderStatusBar(stdscr, Status, height, width)
-        
-        if MenuState == 0:
-            showWindow = False
-
-        # Status 0.
-        def sceneryReader(Status):
-            with open("./Scenery/Scenery_" + str(Status) + ".json", 'r') as j:
-                json_data = json.load(j)
-                functions = json_data['functions']
-                for n in range(len(functions)):
-                    function = functions[n]
-                    funcName = function["function"]
-                    if funcName == "Image":
-                        tilist = getPic.loadImage2(function["imagePath"])
-                        renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-                    if funcName == "Topper":
-                        bar.renderTopper(stdscr, width)
-                    if funcName == "Subtitle":
-                        bar.renderSubtitle(stdscr, start_y, start_x_title, title)
-                    if funcName == "Statusbar":
-                        statusbarstr1 = function["statusbarstr1"]
-                        statusbarstr2 = function["statusbarstr2"]
-                        bar.renderStatusBar(stdscr, Status, height, width, statusbarstr1, statusbarstr2)
-                    if funcName == "Windowstart":
-                        if firsttime == False:
-                            a1 = renderWindow.windowStart(center_x, center_y, k)
-                        else:
-                            a1 = 0
-                        return a1
-                    if funcName == "Switchselect":
-                        switchSelect.serverSelect(center_x, center_y, servSelect, B, serverON)
-                        a1 = 1
-                        return a1
-
-        a1 = sceneryReader(Status)
-        sceneryReader(a1)
-
-        # Status 1. Check
-        if Status == 100:
-            tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
-            bar.renderTopper(stdscr, width)
-            #funkList["Image"]
-            funkList["Topper"]
-            funkList["Image"]
-            funkList["Subtitle"]
-            funkList["Statusbar"]
-            #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            #bar.renderSubtitle(stdscr, start_y, start_x_title, title)
-            #bar.renderStatusBar(stdscr, Status, height, width)
-            #Status = renderWindowOverLogo()
-            if direxists == True and fileexists == True:
-                outstring1 = " STATUS:  "
-                exstatus = True
-            else:
-                outstring1 = " WARNING! "
-                exstatus = False 
-            if direxists == True:
-                outstring2 = " Pilot-Server's default directory was found. "
-                if fileexists == True:
-                    outstring3 = " It was installed with Pilot-TUI. All's ok!"
-                    statusNext = 10
-                    statusPres = 1
-                    labelColor = 8
-                else:
-                    outstring3 = " Pilot-Server was installed without Pilot-TUI."
-                    statusNext = 2
-                    statusPres = 1
-                    labelColor = 5
-            else:
-                outstring2 = " Directory /opt/pilot-server is apsent."
-                outstring3 = " Another location or not installed at all."
-                statusNext = 4
-                statusPres = 1
-                labelColor = 4
-            wWidth = 66
-            wHeight = 6
-            Ypos = 3
-            btn = 'n'
-            btnText = "'N' -  Next step  "
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-            
-        
-        # Status 2. Distrakt. Pilot-Server was set without Pilot-TUI
         if Status == 2:
-            tilist = getPic.loadImage2("./image/04_Distrakt.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            #renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText)
-            outstring1 = " WARNING! "
-            outstring2 = "  Pilot-Server was installed without Pilot-TUI."
-            outstring3 = "  It should be purged and reinstalled. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'p'
-            btnText = "'P' -  PURGE  "
-            statusNext = 3
-            statusPres = 2
-            labelColor = 5
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-            
-        # Status 3. Purging.
-        if Status == 3:
-            tilist = getPic.loadImage2("./image/03_Purging.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firstPurge == True:
-                purge.stopPilotServer()
-                renderWindow.smallWindow(center_x, center_y, "Services are stopped.",0)
-                purge.disablePilotServices()
-                renderWindow.smallWindow(center_x, center_y, "Services are disabled.",3)
-                purge.removePilotDirectory()
-                renderWindow.smallWindow(center_x, center_y, "Directory is removed.",6)
-                firstPurge = False
-            outstring1 = "  Well,  "
-            outstring2 = "  Pilot-Server has been stopped, disabled & purged."
-            outstring3 = "  Press 'N' to move to next step. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'n'
-            btnText = "'N' -  NEXT  "
-            statusNext = 4
-            statusPres = 3
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-            
-        # Status 4. All's clear.
-        if Status == 4:
-            tilist = getPic.loadImage2("./image/05_AllsClear.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            outstring1 = "  Clear,  "
-            outstring2 = "  All's ready to build up fresh Pilot-Server."
-            outstring3 = "  Press 'S' to start installation. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 's'
-            btnText = "'S' -  Start  "
-            statusNext = 5
-            statusPres = 4
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-            
-            
-        # Status 5. Downloading.
-        if Status == 5:
-            tilist = getPic.loadImage2("./image/01_Downloading.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firstLoad == True:
-                loadIntoDirectory.makeFolder(softpath)
-                renderWindow.smallWindow(center_x, center_y, "The folder was created.",0)
-                renderWindow.smallWindow(center_x, center_y, "Downloading archive....",3)
-                loadIntoDirectory.download(softpath)
-                renderWindow.smallWindow(center_x, center_y, "Archive was downloaded.",3)
-                firstLoad = False
-            outstring1 = " ARRIVED "
-            outstring2 = "  Pilot-Server was downloaded."
-            outstring3 = "  Press 'U' to unzip package. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'u'
-            btnText = "'U' - Unzip  "
-            statusNext = 6
-            statusPres = 5
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
+            if k == curses.KEY_F2:
+                Status = 1
 
-        # Status 6. Unpacking.
-        if Status == 6:
-            tilist = getPic.loadImage2("./image/02_Unpacking.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firstUnpac == True:
-                loadIntoDirectory.unzip(softpath)
-                firstUnpac = False
-            outstring1 = " UNZIP "
-            outstring2 = "  Pilot-Server archive was unzipped"
-            outstring3 = "  Press 'S' to set up the server. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 's'
-            btnText = "'S' - Set up  "
-            statusNext = 7
-            statusPres = 6
-            labelColor = 4
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-        
-        # Status 7. Construction.
-        if Status == 7:
-            tilist = getPic.loadImage2("./image/06_Construction.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firstAuth == True:
-                login = renderWindow.inputWindow(center_x, center_y, "Enter login: ",0)
-                passw = renderWindow.inputWindow(center_x, center_y, "Enter passw: ",3)
-                setUp.rights(softpath,login,passw)
-                renderWindow.smallWindow(center_x, center_y, "Pilot-Server is set.",6)
-                firstAuth = False
-            #renderWindow.smallWindow(center_x, center_y, "Services are stopped.",0)
-            outstring1 = " SET UP "
-            outstring2 = "  Pilot-Server archive was set up. Time to test it!"
-            outstring3 = "  Press 'L' to launch server for test. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'l'
-            btnText = "'L' - Launch  "
-            statusNext = 8
-            statusPres = 7
-            labelColor = 5
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-        
-        # Status 8. Test Launch.
-        if Status == 8:
-            tilist = getPic.loadImage2("./image/07_Launch.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firstLaunch == True:
-                testServer.launch(softpath)
+        if Status == 3:
+            if k == curses.KEY_F9:
+                Status = 5
+
+        if Status == 1 or Status == 2:
+            if k == curses.KEY_F9:
+                Status = 3
+            if k == curses.KEY_F8:
+                Status = 4
+            if k == curses.KEY_F2:
+                Status = 6
+            if k == curses.KEY_F5:
+                Status = 8
+            
+        ## END OF DEFINITION OF F-KEYS renderWindow.smallWindow(center_x, center_y, "DB connected. Press a key", -39, 6)#################################
+
+        ################################################################
+        # SCENERY PROCESSOR ############################################
+        ################################################################
+
+        # open next scenery
+        with open("./Scenery/Scenery_" + str(Status) + ".json", 'r') as j:
+            json_data = json.load(j)
+            functions = json_data['functions']
+
+        # run around all functions in scenery
+        for n in range(len(functions)):
+            function = functions[n]
+            funcName = function["function"]
+
+            if funcName == "Image":
+                tilist = getPic.loadImage2(function["imagePath"])
+                renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
+
+            if funcName == "Topper":
+                bar.renderTopper(stdscr, width)
+
+            if funcName == "Subtitle":
+                bar.renderSubtitle(stdscr, start_y, start_x_title, title)
+
+            if funcName == "Statusbar":
+                statusbarstr1 = function["statusbarstr1"]
+                statusbarstr2 = function["statusbarstr2"]
+                bar.renderStatusBar(stdscr, Status, height, width, statusbarstr1, statusbarstr2)
+
+            if funcName == "Windowstart":
+                #if k == ord('s'):
+                    #Status = 1
+                if firsttime == True:
+                    firsttime = False
+                else:
+                    renderWindow.windowStart(center_x, center_y, k)
+
+            if funcName == "Helppage":
+                helpPage.screenHelp(center_x, center_y)
+                Status = 1
+
+            if funcName == "Switchselect":
+                #serverSlots select with keys 1-4
+                if k == ord('1'):
+                    selServ = 1
+                if k == ord('2'):
+                    selServ = 2
+                if k == ord('3'):
+                    selServ = 3
+                if k == ord('4'):
+                    selServ = 4
+
+                servN = str(selServ)
+
+                # to move arrows
+                for ss in range(1,5):
+                    serverSlots[ss][0] = False
+                serverSlots[selServ][0] = True
+
+                # F3, F4 to move switchers
+                if serverSlots[selServ][1] == True:
+                    if k == curses.KEY_F3:
+                        serverSlots[selServ][2] = not serverSlots[selServ][2]
+                    if k == curses.KEY_F4:
+                        serverSlots[selServ][3] = not serverSlots[selServ][3]
+                    # start & stop service
+                    if serverSlots[selServ][2] == True:
+                        buildComplex.serviceStart(servN)
+                    else:
+                        buildComplex.serviceStop(servN)
+                    # enable & disable service
+                    if serverSlots[selServ][3] == True:
+                        buildComplex.serviceEnable(servN)
+                    else:
+                        buildComplex.serviceDisable(servN)
+
+                # launch renderer
+                time.sleep(0.1)
+                switchSelect.serverSelect(center_x, center_y, serverSlots, B, serverON, serverVersion)
+
+                #switchselector end
+
+            if funcName == "Selectserverversion":
+                move = False
+                selectServerVersion.window(center_x, center_y, selServ)
+                if k == ord('1'):
+                    move = True
+                    serverVersionUrl = 'https://pilot.ascon.ru/release/pilot-server.zip'
+                if k == ord('2'):
+                    serverVersionUrl = 'https://pilot.ascon.ru/beta/pilot-server.zip'
+                    move = True
+                if k == ord('3'):
+                    serverVersionUrl = 'https://pilot.ascon.ru/alpha/pilot-server.zip'
+                    move = True
+                if k == ord('4'):
+                    #inputWindow(center_x, center_y, promtText, moveX, moveY, lenght, gap)
+                    inputUrl = renderWindow.inputWindow(center_x, center_y, "Input URL:", -39, 3, 77, 13)
+                    serverVersionUrl = inputUrl
+                    #renderWindow.smallWindow(center_x, center_y, "Got it! Press a key.", 9)
+                    move = True
+                if move == True:
+                    time.sleep(0.2)
+                    Status = 5
+                    renderWindow.smallWindow(center_x, center_y, "  Got it! Press a key.", -13, 6)
+
+            if funcName == "Construction":
+                slotPath = softpath + 'slot_' + str(selServ)
+                direx, filex = where.existance(slotPath)
+                if direx == True:
+                    renderWindow.smallWindow(center_x, center_y, "Server exists", -39, 0)
+                else:
+                    loadUrl.makeFolder(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Construction process:", -39, -6)
+                    renderWindow.smallWindow(center_x, center_y, "The folder was created.", -39, -3)
+                    renderWindow.smallWindow(center_x, center_y, "Downloading server....", -39, 0)
+                    loadUrl.downloadServer(slotPath, serverVersionUrl)
+                    renderWindow.smallWindow(center_x, center_y, "Server was downloaded.", -39, 0)
+                    renderWindow.smallWindow(center_x, center_y, "Downloading bases....", -39, 3)
+                    loadUrl.downloadBase(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Bases were downloaded.", -39, 3)
+                    loadUrl.unzipServer(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Server was unzipped.", -39, 0)
+                    chmodX.setX(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "chmod Ascon.Pilot.Daemon", -39, 0)
+                    loadUrl.unzipBase(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "Bases were unzipped.", -39, 3)
+                    renderWindow.smallWindow(center_x, center_y, "Ready. Press a key.", -39, 6)
+                Status = 6
+
+            if funcName == "Setadmin":
+                slotPath = softpath + 'slot_' + str(selServ)
+                renderWindow.smallWindow(center_x, center_y, "Add Administrator.", -39, -6)
+                #inputWindow(center_x, center_y, promtText, moveX, moveY, lenght, gap)
+                login = renderWindow.inputWindow(center_x, center_y, "Enter login: ", -39, -3, 27, 15)
+                passw = renderWindow.inputWindow(center_x, center_y, "Enter passw: ", -39, 0, 27, 15)
+                setUp.rights(slotPath, login, passw)
                 time.sleep(1.5)
-                outpt = testServer.url()
-                out = str(outpt)[1:]
-                #renderWindow.smallWindow(center_x, center_y, out,6)
-                firstLaunch = False
-            outstring1 = " TEST "
-            outstring2 = " " + out + " was launched."
-            outstring3 = "  Press 'M' to make service from server. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'm'
-            btnText = "'M' - make it "
-            statusNext = 9
-            statusPres = 8
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-        
-        # Status 9. Build a Complex.
-        if Status == 9:
-            tilist = getPic.loadImage2("./image/08_System.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firstBuild == True:
-                buildComplex.adduser(softpath)
-                renderWindow.smallWindow(center_x, center_y, "User 'pilotuser' was added.",0)
-                time.sleep(0.5)
-                buildComplex.service(softpath)
-                renderWindow.smallWindow(center_x, center_y, "Pilot-Server is Service now.",3)
-                time.sleep(0.5)
-                buildComplex.service(softpath)
-                renderWindow.smallWindow(center_x, center_y, "Automatization complete.",6)
-                time.sleep(0.5)
-                firstBuild = False
-            outstring1 = " SERVICE "
-            outstring2 = "  Pilot-Server was set as automatized service."
-            outstring3 = "  Press 'F' to finish installation process. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'f'
-            btnText = "'F' - Finish  "
-            statusNext = 10
-            statusPres = 9
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-        
-        
-        # Status 10. Complete.
-        if Status == 10:
-            tilist = getPic.loadImage2("./image/09_Complete.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            outstring1 = " READY "
-            outstring2 = "  Pilot-Server is ready to work & needs databases."
-            outstring3 = "  Press 'C' to connect it with databases. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'c'
-            btnText = "'C' - Connect  "
-            statusNext = 11
-            statusPres = 10
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-        
-        # Status 11. Connect.
-        if Status == 11:
-            tilist = getPic.loadImage2("./image/10_Connect.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            if firstConnect == True:
-                #connectDemoBases.download(softpath)
-                renderWindow.smallWindow(center_x, center_y, "Demobases were downloaded & unzipped",0)
-                time.sleep(1.0)
-                #connectDemoBases.unzip(softpath)
-                #renderWindow.smallWindow(center_x, center_y, "... & unzipped.",3)
-                #time.sleep(0.5)
-                connectDemoBases.attach(softpath)
-                renderWindow.smallWindow(center_x, center_y, "Demobases were connected.",6)
-                time.sleep(0.5)
-                firstConnect = False
-            outstring1 = " BASES "
-            outstring2 = "  Demobases were downloaded & connected"
-            outstring3 = "  Press 'M' to go to main menu. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'm'
-            btnText = "'M' - Main menu  "
-            statusNext = 12
-            statusPres = 11
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-        
-        # Status 12. FRONT.
-        if Status == 12:
-            installed = True
-            tilist = getPic.loadImage2("./image/00_pilottui-logo.ti")
-            bar.renderTopper(stdscr, width)
-            funkList["Image"]
-            #renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            #renderImage()
-            bar.renderSubtitle(stdscr, start_y, start_x_title, title)
-            bar.renderStatusBar(stdscr, Status, height, width)
-        
-        # Status 13. UPDATE.
-        if Status == 13:
-            tilist = getPic.loadImage2("./image/11_Update.ti")
-            bar.renderTopper(stdscr, width)
-            renderImage.renderImage(stdscr, height, width, tilist, center_x, center_y, B)
-            bar.renderStatusBar(stdscr, Status, height, width)
-            outstring1 = " SYSTEM "
-            outstring2 = "  Pilot-Server archive was downloaded"
-            outstring3 = "  Press 'U' to unzip package. "
-            wWidth = 66
-            wHeight = 6
-            Ypos = -12
-            btn = 'u'
-            btnText = "'U' - Unzip  "
-            statusNext = 1
-            statusPres = 13
-            labelColor = 3
-            Status = renderWindow.renderWindowUpperCommon(k, center_x, center_y, outstring1, outstring2, outstring3, wWidth, wHeight,Ypos,btn,btnText,statusNext,statusPres,labelColor)
-        
-        #Control SCREENS
-        
-        # Screen 1. HELP
-        if ScreenN == 1:
-            time.sleep(0.1)
-            helpPage.screenHelp(center_x, center_y)
-        
-        # Screen 2. SRVS
-        if ScreenN == 2:
-            time.sleep(0.1)
-            switchSelect.serverSelect(center_x, center_y, servSelect, B, serverON)
-        
+                renderWindow.smallWindow(center_x, center_y, "Got it!...", -39, 3)
+                Status = 7
+
+            if funcName == "Purge":
+                slotPath = softpath + 'slot_' + str(selServ)
+                direx, filex = where.existance(slotPath)
+                if direx == False:
+                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
+                else:
+                    if serverSlots[selServ][2] == True:
+                        stopServices.stopPilotServer(selServ)
+                        renderWindow.smallWindow(center_x, center_y, "Services are stopped.", -39, -3)
+                        serverSlots[selServ][2] = False
+                    else:
+                        renderWindow.smallWindow(center_x, center_y, "Services were stopped.", -39, -3)
+                    if serverSlots[selServ][3] == True:
+                        stopServices.stopPilotUpdate(selServ)
+                        renderWindow.smallWindow(center_x, center_y, "Update is stopped.", -39, -3)
+                        serverSlots[selServ][3] = False
+                    else:
+                        renderWindow.smallWindow(center_x, center_y, "Update was stopped.", -39, -3)
+
+                    if serverSlots[selServ][0] == True:
+                        stopServices.disablePilotServices(selServ)
+                        renderWindow.smallWindow(center_x, center_y, "Services are disabled.", -39, 0)
+                    else:
+                        renderWindow.smallWindow(center_x, center_y, "Services were disabled.", -39, 0)
+
+                    purge.removePilotDirectory(slotPath)
+                    serverSlots[selServ][1] = False
+                    renderWindow.smallWindow(center_x, center_y, "Directory is removed.", -39, 3)
+                    renderWindow.smallWindow(center_x, center_y, "Purged. Press a key.", -39, 6)
+                Status = 1
+
+            if funcName == "System":
+                ServN = str(selServ)
+                slotPath = softpath + 'slot_' + ServN
+                direx, filex = where.existance(slotPath)
+                if direx == False:
+                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
+                else:
+                    buildComplex.adduser(slotPath)
+                    renderWindow.smallWindow(center_x, center_y, "User 'pilotuser' was added.", -39, -3)
+                    time.sleep(0.5)
+                    buildComplex.service(slotPath, ServN)
+                    renderWindow.smallWindow(center_x, center_y, "Pilot-Server is Service now.", -39, 0)
+                    time.sleep(0.5)
+                    buildComplex.sudoers()
+                    time.sleep(0.5)
+                    buildComplex.chownPS()
+                    renderWindow.smallWindow(center_x, center_y, "Rights were set.", -39, 3)
+                    time.sleep(0.5)
+                    renderWindow.smallWindow(center_x, center_y, "Ready! Press a key.", -39, 6)
+
+                    # write filex
+                    check = open(slotPath + '/pilot-tui', 'w')
+                    check.write(str(1))
+                    check.close()
+                Status = 1
+
+            if funcName == "Baseconnect":
+                slotPath = softpath + 'slot_' + str(selServ)
+                direx, filex = where.existance(slotPath)
+                if direx == False:
+                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
+                    Status = 1
+                else:
+                    renderWindow.smallWindow(center_x, center_y, "Connect Databases:", -39, -6)
+                    renderWindow.smallWindow(center_x, center_y, "Input 'demo' for demo DB", -39, -3)
+                    renderWindow.smallWindow(center_x, center_y, "Or input full path to DB", -39, 0)
+                    renderWindow.smallWindow(center_x, center_y, "Or 'no' to quit this", -39, 3)
+
+                    input = renderWindow.inputWindow(center_x, center_y, "Input:", -39, 6, 77, 13)
+
+                    if input == 'demo':
+                        connectDemoBases.attach(slotPath)
+                        #Status = 1
+                    elif input == 'no':
+                        Status = 1
+                    else:
+                        name = renderWindow.inputWindow(center_x, center_y, "DB name:", -39, 6, 77, 13)
+                        connectBase.attach(slotPath, input, name)
+                        #Status = 1
+                    buildComplex.chownPS()
+                    Status = 1
+
+
+
+
+
+
         #cursor move works if right before the refresh()
         #stdscr.move(cursor_y, cursor_x)
         
@@ -552,6 +439,12 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
         # Wait for next input
         k = stdscr.getch()
+
+    #saving the serverslot matrix on F12 exit
+    save = open('./saves/serverslots', 'wb')
+    pickle.dump(serverSlots, save)
+    save.close()
+
         
 
 def main():
