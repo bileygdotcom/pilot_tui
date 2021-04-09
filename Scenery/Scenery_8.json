@@ -2,18 +2,18 @@
   "functions": [
     {
       "function": "Image",
-      "imagePath": "./image/08_System.ti"
+      "imagePath": "./image/13_db.ti"
     },
     {
       "function": "Topper"
     },
     {
       "function": "Statusbar",
-      "statusbarstr1": " ... convert server to systemd unit ",
+      "statusbarstr1": " ... database connection ",
       "statusbarstr2": "  "
     },
     {
-      "function": "System"
+      "function": "Baseconnect"
     }
   ]
 }

@@ -32,10 +32,6 @@ import purge
 import where
 import getPic
 import configure
-import loadIntoDirectory
-import setUp
-import testServer
-import buildComplex
 import connectDemoBases
 import renderImage
 import bar
@@ -47,10 +43,11 @@ import loadUrl
 import stopServices
 import selectServerVersion
 import setUp
-import testServer
 import chmodX
 import buildComplex
 import pickle
+import connectBase
+import testServer
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -90,6 +87,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     servSelect = False
     sel = False
     selServ = 1
+    go = False
 
     # server slots matrix
     # [selected, installed, launched, autostart, version]
@@ -107,6 +105,12 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
         save = open('./saves/serverslots', 'wb')
         pickle.dump(serverSlots, save)
         save.close()
+
+    for sss in range(1,5):
+        if os.path.isfile(softpath+'slot_'+str(sss)):
+            serverSlots[sss][1] = True
+        else:
+            serverSlots[sss][1] = False
 
     
     # Declaration of about strings
@@ -145,6 +149,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             direx, filex = where.existance(slotPath)
             if direx == True and filex == True:
                 serverSlots[sli][1] = True
+                #get server version
+                serverVersion = testServer.url()[13:]
 
         # Initialization
         stdscr.erase()
@@ -190,10 +196,10 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 Status = 4
             if k == curses.KEY_F2:
                 Status = 6
-            if k == curses.KEY_F7:
-                Status = 7
+            if k == curses.KEY_F5:
+                Status = 8
             
-        ## END OF DEFINITION OF F-KEYS #################################
+        ## END OF DEFINITION OF F-KEYS renderWindow.smallWindow(center_x, center_y, "DB connected. Press a key", -39, 6)#################################
 
         ################################################################
         # SCENERY PROCESSOR ############################################
@@ -273,7 +279,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
 
                 # launch renderer
                 time.sleep(0.1)
-                switchSelect.serverSelect(center_x, center_y, serverSlots, B, serverON)
+                switchSelect.serverSelect(center_x, center_y, serverSlots, B, serverON, serverVersion)
 
                 #switchselector end
 
@@ -341,14 +347,16 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 if direx == False:
                     renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
                 else:
-                    if serverSlots[selServ][3] == True:
+                    if serverSlots[selServ][2] == True:
                         stopServices.stopPilotServer(selServ)
                         renderWindow.smallWindow(center_x, center_y, "Services are stopped.", -39, -3)
+                        serverSlots[selServ][2] = False
                     else:
                         renderWindow.smallWindow(center_x, center_y, "Services were stopped.", -39, -3)
-                    if serverSlots[selServ][4] == True:
+                    if serverSlots[selServ][3] == True:
                         stopServices.stopPilotUpdate(selServ)
                         renderWindow.smallWindow(center_x, center_y, "Update is stopped.", -39, -3)
+                        serverSlots[selServ][3] = False
                     else:
                         renderWindow.smallWindow(center_x, center_y, "Update was stopped.", -39, -3)
 
@@ -359,6 +367,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                         renderWindow.smallWindow(center_x, center_y, "Services were disabled.", -39, 0)
 
                     purge.removePilotDirectory(slotPath)
+                    serverSlots[selServ][1] = False
                     renderWindow.smallWindow(center_x, center_y, "Directory is removed.", -39, 3)
                     renderWindow.smallWindow(center_x, center_y, "Purged. Press a key.", -39, 6)
                 Status = 1
@@ -377,14 +386,47 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     renderWindow.smallWindow(center_x, center_y, "Pilot-Server is Service now.", -39, 0)
                     time.sleep(0.5)
                     buildComplex.sudoers()
-                    renderWindow.smallWindow(center_x, center_y, "Automatization complete.", -39, 3)
                     time.sleep(0.5)
+                    buildComplex.chownPS()
+                    renderWindow.smallWindow(center_x, center_y, "Rights were set.", -39, 3)
+                    time.sleep(0.5)
+                    renderWindow.smallWindow(center_x, center_y, "Ready! Press a key.", -39, 6)
 
                     # write filex
                     check = open(slotPath + '/pilot-tui', 'w')
                     check.write(str(1))
                     check.close()
                 Status = 1
+
+            if funcName == "Baseconnect":
+                slotPath = softpath + 'slot_' + str(selServ)
+                direx, filex = where.existance(slotPath)
+                if direx == False:
+                    renderWindow.smallWindow(center_x, center_y, "Server doesn't exist", -39, 0)
+                    Status = 1
+                else:
+                    renderWindow.smallWindow(center_x, center_y, "Connect Databases:", -39, -6)
+                    renderWindow.smallWindow(center_x, center_y, "Input 'demo' for demo DB", -39, -3)
+                    renderWindow.smallWindow(center_x, center_y, "Or input full path to DB", -39, 0)
+                    renderWindow.smallWindow(center_x, center_y, "Or 'no' to quit this", -39, 3)
+
+                    input = renderWindow.inputWindow(center_x, center_y, "Input:", -39, 6, 77, 13)
+
+                    if input == 'demo':
+                        connectDemoBases.attach(slotPath)
+                        #Status = 1
+                    elif input == 'no':
+                        Status = 1
+                    else:
+                        name = renderWindow.inputWindow(center_x, center_y, "DB name:", -39, 6, 77, 13)
+                        connectBase.attach(slotPath, input, name)
+                        #Status = 1
+                    buildComplex.chownPS()
+                    Status = 1
+
+
+
+
 
 
         #cursor move works if right before the refresh()

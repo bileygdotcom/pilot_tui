@@ -1,6 +1,6 @@
 #switch select module
 #(center_x, center_y,
-def srvNum(y, col, num, serverSlots, tw1):
+def srvNum(y, col, num, serverSlots, tw1, serverVersion):
     import curses
 
     # server slot selector - draw arrows
@@ -22,6 +22,7 @@ def srvNum(y, col, num, serverSlots, tw1):
     tw1.addstr(y, 28 + 6, "O ")
     tw1.addstr(y, 36 + 6, "  I")
     tw1.addstr(y, 43 + 6, "out")
+    tw1.addstr(5, 43 + 6, serverVersion)
 
 def srvSwitcher(y, ssz, B, tw1, ssw, serverSlots):
     import curses
@@ -52,7 +53,7 @@ def srvSwitcher(y, ssz, B, tw1, ssw, serverSlots):
     tw1.attroff(curses.A_BOLD)
     tw1.attroff(curses.color_pair(7))
 
-def serverSelect(center_x, center_y, serverSlots, B, serverON):
+def serverSelect(center_x, center_y, serverSlots, B, serverON, serverVersion):
     import curses
     # outpt = testServer.url()
     # out = str(outpt)[1:]
@@ -75,7 +76,7 @@ def serverSelect(center_x, center_y, serverSlots, B, serverON):
     # draw switchers
     for ssw in range(1, 5):
         ys = ssw * 2 + 3
-        srvNum(ys, 6, ssw, serverSlots, tw1)
+        srvNum(ys, 6, ssw, serverSlots, tw1,serverVersion)
         srvSwitcher(ys, 2, B, tw1, ssw, serverSlots)
         srvSwitcher(ys, 3, B, tw1, ssw, serverSlots)
 
