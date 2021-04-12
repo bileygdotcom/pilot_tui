@@ -11,8 +11,14 @@ def adduser(slotPath):
     #err = str(p.stderr.read())
 
 def chownPS():
-    command = 'sudo chown pilotuser -Rv /opt/pilot-servers'
-    subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
+    import shutil
+    path = '/opt/pilot-servers/'
+    user = 'pilotuser'
+    group = 'pilotuser'
+    shutil.chown(path,user,group)
+
+    #command = 'sudo chown pilotuser -Rv /opt/pilot-servers'
+    #subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
 
 def service(slotPath, ServN):
     os.mkdir(slotPath+'/bin/')
