@@ -446,6 +446,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     save = open('./saves/serverslots', 'wb')
     pickle.dump(serverSlots, save)
     save.close()
+    #set rigths on exit
+    buildComplex.chownPS()
 
         
 
