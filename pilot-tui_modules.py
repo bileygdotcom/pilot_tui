@@ -48,6 +48,7 @@ import buildComplex
 import pickle
 import connectBase
 import testServer
+import portSetting
 
 
 def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
@@ -70,10 +71,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     whatkey = "left"
     colA = 4
     colB = 3
-    #Status = 0 - installation mode
     Status = 0
-    #Status = 12 - normal mode
-    #Status = 12
     firstPurge = True
     firstLoad = True
     firstUnpac = True
@@ -88,6 +86,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
     sel = False
     selServ = 1
     go = False
+    serverVersion = [0,'no server','no server','no server','no server']
 
     # server slots matrix
     # [selected, installed, launched, autostart, version]
@@ -150,7 +149,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
             if direx == True and filex == True:
                 serverSlots[sli][1] = True
                 #get server version
-                serverVersion = testServer.url()[13:]
+                serverVersion[sli] = testServer.url(sli)[13:]
 
         # Initialization
         stdscr.erase()
@@ -327,6 +326,7 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                     renderWindow.smallWindow(center_x, center_y, "chmod Ascon.Pilot.Daemon", -39, 0)
                     loadUrl.unzipBase(slotPath)
                     renderWindow.smallWindow(center_x, center_y, "Bases were unzipped.", -39, 3)
+                    portSetting.setSlot(slotPath, selServ)
                     renderWindow.smallWindow(center_x, center_y, "Ready. Press a key.", -39, 6)
                 Status = 6
 
