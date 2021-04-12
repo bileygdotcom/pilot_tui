@@ -197,6 +197,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                 Status = 6
             if k == curses.KEY_F5:
                 Status = 8
+            if k == curses.KEY_F7:
+                buildComplex.chownPS()
             
         ## END OF DEFINITION OF F-KEYS renderWindow.smallWindow(center_x, center_y, "DB connected. Press a key", -39, 6)#################################
 
@@ -421,8 +423,8 @@ def draw_menu(stdscr, tilist, conflist, Fconf, F_Done):
                         name = renderWindow.inputWindow(center_x, center_y, "DB name:", -39, 6, 77, 13)
                         connectBase.attach(slotPath, input, name)
                         #Status = 1
-                    buildComplex.chownPS()
-                    Status = 1
+                buildComplex.chownPS()
+                Status = 1
 
 
 
