@@ -13,9 +13,12 @@ def adduser(slotPath):
 def chownPS():
     import shutil
     path = '/opt/pilot-servers/'
-    user = 'pilotuser'
+    owner = 'pilotuser'
     group = 'pilotuser'
-    shutil.chown(path,user,group)
+    for dirpath, dirnames, filenames in os.walk(path):
+        shutil.chown(dirpath, owner)
+        for filename in filenames:
+            shutil.chown(os.path.join(dirpath, filename), owner)
 
     #command = 'sudo chown pilotuser -Rv /opt/pilot-servers'
     #subprocess.Popen(command, shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, universal_newlines=True)
